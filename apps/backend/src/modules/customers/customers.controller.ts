@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import type { CustomerDetailDto, CustomerDto, CustomerListItemDto, CustomersBatchResult } from '@lamma/shared';
+import type { CustomerDetailDto, CustomerDto, CustomerListItemDto, CustomersBatchResult, HistoryEventDto } from '@lamma/shared';
 import { CurrentBusinessId } from '../../common/auth/current-business-id.decorator.js';
 import { JwtAuthGuard } from '../../common/auth/jwt-auth.guard.js';
 import { toCustomerDto } from './customer.mapper.js';
@@ -17,6 +17,11 @@ export class CustomersController {
   @Get()
   list(@CurrentBusinessId() businessId: string, @Query() query: ListCustomersQueryDto): Promise<CustomerListItemDto[]> {
     return this.customers.list(businessId, query);
+  }
+
+  @Get(':id/history')
+  history(@CurrentBusinessId() businessId: string, @Param('id') id: string): Promise<HistoryEventDto[]> {
+    return this.customers.history(businessId, id);
   }
 
   @Get(':id')

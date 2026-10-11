@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { type MonthlyTerms, toWesternDigits } from '@lamma/shared';
 import type { Customer, Prisma } from '../../generated/prisma/client.js';
 import { PrismaService } from '../../infra/prisma/prisma.service.js';
+import type { HistorySource } from './customer-history.js';
 import type { CustomerRow } from './customer-input.js';
 
 @Injectable()
@@ -50,5 +51,22 @@ export class CustomersRepository {
 
   async archive(id: string, at: Date): Promise<void> {
     await this.prisma.customer.update({ where: { id }, data: { archivedAt: at } });
+  }
+
+  findHistorySource(customerId: string): Promise<HistorySource> {
+    return this.prisma.customer.findUniqueOrThrow({
+      where: { id: customerId },
+      select: {
+        createdAt: true,
+        invoices: {
+          select: {
+            id: true, title: true, period: true, amount: true, dueDate: true, paidAt: true,
+            _count: { select: { claims: { where: { status: 'pending' } } } },
+            payments: { select: { amount: true, method: true, recordedAt: true } },
+            reminderLogs: { select: { kind: true, sentAt: true } },
+          },
+        },
+      },
+    });
   }
 }

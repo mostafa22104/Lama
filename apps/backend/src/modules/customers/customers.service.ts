@@ -5,6 +5,7 @@ import {
   type CustomerInput,
   type CustomerListItemDto,
   type CustomerUpdate,
+  type HistoryEventDto,
   type InvoiceStatus,
   type InvoiceSummaryDto,
   nextMonthlyDue,
@@ -17,6 +18,7 @@ import { AppError } from '../../common/errors/app-error.js';
 import type { Customer } from '../../generated/prisma/client.js';
 import { BusinessService } from '../business/index.js';
 import { InvoiceQueryService } from '../invoices/index.js';
+import { buildHistory } from './customer-history.js';
 import { normalizeCustomerPhone, toCustomerRow } from './customer-input.js';
 import { buildCustomerListItem } from './customer-summary.js';
 import { toCustomerDto } from './customer.mapper.js';
@@ -80,6 +82,13 @@ export class CustomersService {
       openInvoices: open,
       nextDue: nextMonthlyDue(await this.customers.activeMonthlyTerms(id), today),
     };
+  }
+
+  async history(businessId: string, id: string): Promise<HistoryEventDto[]> {
+    await this.getOwned(businessId, id);
+    const today = businessToday(this.clock.now());
+    await this.invoices.refresh(businessId, today);
+    return buildHistory(await this.customers.findHistorySource(id), today);
   }
 
   async getOwned(businessId: string, id: string): Promise<Customer> {
