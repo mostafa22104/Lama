@@ -10,6 +10,7 @@ import { ChargesModule } from './modules/charges/index.js';
 import { CustomersModule } from './modules/customers/index.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { InvoicesModule } from './modules/invoices/index.js';
+import { RemindersModule } from './modules/reminders/index.js';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { InvoicesModule } from './modules/invoices/index.js';
     CustomersModule,
     InvoicesModule,
     ChargesModule,
+    RemindersModule,
     AuthModule,
   ],
 })
