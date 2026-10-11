@@ -65,6 +65,17 @@ describe('OtpService', () => {
     );
   });
 
+  it('does not count correct checks against the attempt limit', async () => {
+    await service.request('phone', target, t0);
+    const right = sender.lastCodeFor(target);
+    const wrong = right === '000000' ? '111111' : '000000';
+    for (let i = 0; i < 4; i++) {
+      await expect(service.check(target, wrong, after(i + 1))).rejects.toThrow(code('OTP_INVALID'));
+    }
+    await expect(service.check(target, right, after(10))).resolves.toEqual(expect.any(String));
+    await expect(service.check(target, right, after(11))).resolves.toEqual(expect.any(String));
+  });
+
   it('counts concurrent wrong guesses atomically', async () => {
     await service.request('phone', target, t0);
     const right = sender.lastCodeFor(target);

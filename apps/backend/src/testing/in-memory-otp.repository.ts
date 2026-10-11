@@ -29,6 +29,11 @@ export class InMemoryOtpRepository {
     return true;
   }
 
+  async refundAttempt(id: string): Promise<void> {
+    const record = this.records.find((r) => r.id === id);
+    if (record && record.attempts > 0) record.attempts -= 1;
+  }
+
   async consume(id: string, now: Date): Promise<number> {
     const record = this.records.find((r) => r.id === id && !r.consumedAt);
     if (!record) return 0;

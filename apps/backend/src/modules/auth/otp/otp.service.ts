@@ -47,6 +47,7 @@ export class OtpService {
     if (!safeEqualHex(latest.codeHash, candidate)) {
       throw new AppError('OTP_INVALID', 'Wrong code');
     }
+    await this.otps.refundAttempt(latest.id);
     return latest.id;
   }
 

@@ -39,6 +39,14 @@ export class OtpRepository {
     return count === 1;
   }
 
+  /** Gives back an attempt reserved by a check whose code turned out to be right. */
+  async refundAttempt(id: string): Promise<void> {
+    await this.prisma.otpCode.updateMany({
+      where: { id, attempts: { gt: 0 } },
+      data: { attempts: { decrement: 1 } },
+    });
+  }
+
   /** Returns 1 when this call consumed the code, 0 when it was already consumed. */
   async consume(id: string, now: Date): Promise<number> {
     const { count } = await this.prisma.otpCode.updateMany({

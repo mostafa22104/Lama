@@ -86,6 +86,15 @@ describe('signup and login (e2e)', () => {
     expect(res.body).toMatchObject({ isNewBusiness: false, business: { name: business.name } });
   });
 
+  it('lets a new owner sign up after typos and a login probe with the same code', async () => {
+    const code = await requestCode(t);
+    const wrong = code === '000000' ? '111111' : '000000';
+    // 4 typos + the probe + signup = 6 checks; without the refund the 6th would hit the 5-attempt limit.
+    for (let i = 0; i < 4; i++) await verify(t, { contact: OWNER_PHONE, code: wrong }).expect(400);
+    await verify(t, { contact: OWNER_PHONE, code }).expect(404);
+    await verify(t, { contact: OWNER_PHONE, code, signup: SIGNUP }).expect(200);
+  });
+
   it('treats emails case-insensitively', async () => {
     const code = await requestCode(t, 'Owner@Example.COM', 'email');
     const signup = await t
