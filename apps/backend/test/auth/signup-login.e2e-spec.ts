@@ -46,7 +46,7 @@ describe('signup and login (e2e)', () => {
 
   it('logs in with a differently formatted phone and returns the same business', async () => {
     const { business } = await signUp(t);
-    for (const spelling of ['+20 10 1234 5678', '٠١٠١٢٣٤٥٦٧٨']) {
+    for (const spelling of ['010 1234 5678', '+20 10 1234 5678', '00201012345678', '٠١٠١٢٣٤٥٦٧٨']) {
       await allowNewCode(t);
       const code = await requestCode(t, spelling);
       const res = await verify(t, { contact: spelling, code }).expect(200);
