@@ -166,6 +166,8 @@ model ChargeAssignment {
   customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   @@id([chargeId, customerId])
+
+  @@index([customerId])
 }
 
 model Invoice {
@@ -190,6 +192,8 @@ model Invoice {
 
   @@unique([chargeId, customerId, period])
   @@index([businessId, dueDate])
+  @@index([customerId])
+  @@index([chargeId])
 }
 
 model Payment {
@@ -201,6 +205,8 @@ model Payment {
   claimId    String?       @unique
   claim      PaymentClaim? @relation(fields: [claimId], references: [id])
   recordedAt DateTime      @default(now())
+
+  @@index([invoiceId])
 }
 
 model ReminderRule {
@@ -255,4 +261,6 @@ model ImportJob {
   rows       Json         @default("[]")
   error      String?
   createdAt  DateTime     @default(now())
+
+  @@index([businessId])
 }

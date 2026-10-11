@@ -13,5 +13,8 @@ export const enErrors: Record<ErrorCode, string> = {
   CONTACT_INVALID: 'That phone number or email is not valid',
   RATE_LIMITED: 'Too many requests, try again shortly',
   PLAN_LIMIT_REACHED: "You've reached your plan's customer limit",
+  INVOICE_ALREADY_PAID: 'This amount is already marked as paid',
+  FORBIDDEN: "You're not allowed to do that",
+  PAYLOAD_TOO_LARGE: 'The data or file is too large',
   INTERNAL_ERROR: 'Something went wrong, try again',
 };

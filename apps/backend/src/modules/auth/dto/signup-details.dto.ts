@@ -1,8 +1,7 @@
 import { BUSINESS_TYPES, type BusinessType, type SignupDetails } from '@lamma/shared';
 import { Transform } from 'class-transformer';
 import { IsIn, IsString, Length } from 'class-validator';
-
-const trim = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value);
+import { trim } from '../../../common/validation/trim.js';
 
 export class SignupDetailsDto implements SignupDetails {
   @Transform(trim)

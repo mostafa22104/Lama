@@ -28,4 +28,24 @@ describe('toErrorResponse', () => {
       body: { code: 'INTERNAL_ERROR', message: 'Internal server error' },
     });
   });
+
+  it('maps body-parser errors by their status', () => {
+    const tooLarge = Object.assign(new Error('request entity too large'), { status: 413, expose: true });
+    expect(toErrorResponse(tooLarge)).toEqual({
+      status: 413,
+      body: { code: 'PAYLOAD_TOO_LARGE', message: 'request entity too large' },
+    });
+  });
+
+  it('maps 403 and 409 HttpExceptions to stable codes', () => {
+    expect(toErrorResponse(new HttpException('no', 403)).body.code).toBe('FORBIDDEN');
+    expect(toErrorResponse(new HttpException('dup', 409)).body.code).toBe('INVOICE_ALREADY_PAID');
+  });
+
+  it('hides the message of 5xx HttpExceptions', () => {
+    expect(toErrorResponse(new HttpException('db password is hunter2', 503)).body).toEqual({
+      code: 'INTERNAL_ERROR',
+      message: 'Internal server error',
+    });
+  });
 });

@@ -9,6 +9,11 @@ const valid = {
 };
 
 describe('parseEnv', () => {
+  it('defaults WEB_BASE_URL for local development and validates it', () => {
+    expect(parseEnv(valid).WEB_BASE_URL).toBe('http://localhost:3001');
+    expect(() => parseEnv({ ...valid, WEB_BASE_URL: 'not a url' })).toThrow(/WEB_BASE_URL/);
+  });
+
   it('applies defaults for optional values', () => {
     const env = parseEnv(valid);
     expect(env).toMatchObject({

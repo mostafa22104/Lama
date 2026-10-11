@@ -12,6 +12,7 @@ const envSchema = z.object({
   OTP_SECRET: z.string().min(32),
   OTP_TTL_SECONDS: z.coerce.number().int().positive().default(300),
   OTP_MAX_ATTEMPTS: z.coerce.number().int().positive().default(5),
+  WEB_BASE_URL: z.url().default('http://localhost:3001'),
   OTP_RESEND_COOLDOWN_SECONDS: z.coerce.number().int().nonnegative().default(60),
 });
 

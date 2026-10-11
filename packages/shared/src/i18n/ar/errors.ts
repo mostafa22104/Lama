@@ -13,5 +13,8 @@ export const arErrors: Record<ErrorCode, string> = {
   CONTACT_INVALID: 'الرقم أو الإيميل مش مظبوط',
   RATE_LIMITED: 'طلبات كتير، استنى شوية وجرّب تاني',
   PLAN_LIMIT_REACHED: 'وصلت لأقصى عدد عملاء في باقتك',
+  INVOICE_ALREADY_PAID: 'المبلغ ده متسجّل إنه اتدفع خلاص',
+  FORBIDDEN: 'مش مسموح لك بالحركة دي',
+  PAYLOAD_TOO_LARGE: 'البيانات أو الملف كبير أوي',
   INTERNAL_ERROR: 'حصلت مشكلة، جرّب تاني',
 };
