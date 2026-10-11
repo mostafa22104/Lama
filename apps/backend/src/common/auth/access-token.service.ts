@@ -22,13 +22,17 @@ export class AccessTokenService {
     const payload: AccessTokenPayload = { sub: businessId };
     return this.jwt.sign(payload, {
       secret: this.env.JWT_ACCESS_SECRET,
+      algorithm: 'HS256',
       expiresIn: this.env.JWT_ACCESS_TTL_SECONDS,
     });
   }
 
   verify(token: string): AccessTokenPayload {
     try {
-      return this.jwt.verify<AccessTokenPayload>(token, { secret: this.env.JWT_ACCESS_SECRET });
+      return this.jwt.verify<AccessTokenPayload>(token, {
+        secret: this.env.JWT_ACCESS_SECRET,
+        algorithms: ['HS256'],
+      });
     } catch {
       throw new AppError('TOKEN_INVALID', 'Access token is invalid or expired');
     }

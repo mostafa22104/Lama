@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { parseEnv } from './env.js';
 
 const valid = {
+  NODE_ENV: 'development',
   DATABASE_URL: 'postgresql://u:p@localhost:5432/db',
   JWT_ACCESS_SECRET: 'a'.repeat(32),
   OTP_SECRET: 'b'.repeat(32),
@@ -11,7 +12,6 @@ describe('parseEnv', () => {
   it('applies defaults for optional values', () => {
     const env = parseEnv(valid);
     expect(env).toMatchObject({
-      NODE_ENV: 'development',
       PORT: 3000,
       JWT_ACCESS_TTL_SECONDS: 900,
       REFRESH_TTL_DAYS: 30,
@@ -19,6 +19,11 @@ describe('parseEnv', () => {
       OTP_MAX_ATTEMPTS: 5,
       OTP_RESEND_COOLDOWN_SECONDS: 60,
     });
+  });
+
+  it('requires NODE_ENV so a forgotten value cannot select dev-only behaviour', () => {
+    const { NODE_ENV: _omitted, ...withoutNodeEnv } = valid;
+    expect(() => parseEnv(withoutNodeEnv)).toThrow(/NODE_ENV/);
   });
 
   it('coerces numeric strings', () => {

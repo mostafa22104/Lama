@@ -26,6 +26,14 @@ describe('AccessTokenService', () => {
     );
   });
 
+  it('rejects tokens signed with a different algorithm (HS512) and the same secret', () => {
+    const token = new JwtService().sign(
+      { sub: 'biz_1' },
+      { secret: testEnv().JWT_ACCESS_SECRET, algorithm: 'HS512', expiresIn: 60 },
+    );
+    expect(() => service.verify(token)).toThrow(expect.objectContaining({ code: 'TOKEN_INVALID' }));
+  });
+
   it('rejects expired tokens', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-09-20T10:00:00Z'));
