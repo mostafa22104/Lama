@@ -59,6 +59,12 @@ describe('signup and login (e2e)', () => {
     await verify(t, { contact: OWNER_PHONE, code: toArabicDigits(code), signup: SIGNUP }).expect(200);
   });
 
+  it('accepts a code with an inner space and a bidi mark', async () => {
+    const code = await requestCode(t);
+    const pasted = `\u200E${toArabicDigits(code.slice(0, 3))} ${toArabicDigits(code.slice(3))}`;
+    await verify(t, { contact: OWNER_PHONE, code: pasted, signup: SIGNUP }).expect(200);
+  });
+
   it('asks an unknown contact to sign up, then signs up with the same code', async () => {
     const code = await requestCode(t);
     const login = await verify(t, { contact: OWNER_PHONE, code }).expect(404);
