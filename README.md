@@ -53,6 +53,23 @@ yarn workspace @lamma/backend db:migrate --name <change>   # new migration after
 
 After editing `packages/shared`, run `yarn build:shared` so the apps' type-checks see the change. Backend tests read the shared source directly.
 
+## API (v1)
+
+All owner routes need `Authorization: Bearer <accessToken>`. Errors are `{ code, message, details? }`; translate `code` with `packages/shared/src/i18n`.
+
+| Method & path | What |
+|---|---|
+| `POST /auth/otp/request` · `POST /auth/otp/verify` · `POST /auth/refresh` · `POST /auth/logout` | OTP sign-up / login, tokens |
+| `GET/PATCH /business` · `GET /business/usage` · `POST /business/upgrade-request` | Business settings and plan |
+| `GET /customers?search=&status=` · `POST /customers` · `POST /customers/batch` | List (status + balance) / create |
+| `GET/PATCH/DELETE /customers/:id` · `GET /customers/:id/history` | Detail, edit, archive, timeline |
+| `GET/POST /charges` · `PATCH /charges/:id` | Monthly and one-time charges |
+| `POST /invoices/:id/cash-payment` | Record cash |
+| `GET/PUT /reminders/rule` · `GET /reminders/today` · `GET /reminders/invoices/:id` · `POST /reminders/:invoiceId/sent` | WhatsApp reminders |
+| `GET /dashboard/home` · `GET /reports/monthly?period=YYYY-MM` | Home screen and monthly report |
+
+Monthly invoices are created when a charge is created and back-filled on every read (`InvoiceGenerator.ensureUpToDate`); there is no background job yet.
+
 ## Conventions
 
 - Feature folders: `apps/backend/src/modules/<feature>/` with controller → service → repository.
