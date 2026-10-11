@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>المبلغ المطلوب</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'IBM Plex Sans Arabic', 'Noto Sans Arabic', Tahoma, sans-serif;background:#F6F4EF;color:#1C2B2A}
+a{color:#0F5E56}a:hover{color:#0A4540}
+button,input,select{font-family:inherit}
+details summary::-webkit-details-marker{display:none}
+@keyframes lammaSpin{to{transform:rotate(360deg)}}
+@keyframes lammaScan{0%{top:8%}50%{top:88%}100%{top:8%}}
+@keyframes lammaPulse{0%,100%{opacity:1}50%{opacity:.45}}
+
+</style>
+</helmet>
+<div dir="rtl" style="margin: 0 auto; width: 375px; height: 1240px; display: flex; flex-direction: column; background: #F6F4EF; color: #1C2B2A; font-family: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', Tahoma, sans-serif; overflow: hidden; box-sizing: border-box; position: relative;"><div style="display: flex; align-items: center; gap: 12px; padding: 16px 16px 8px; min-height: 60px; box-sizing: border-box;"><a href="NotebookReview.dc.html" aria-label="رجوع" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #1C2B2A; background: #FFFFFF; border: 1px solid #E4DFD5; flex-shrink: 0;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a><div style="flex-grow: 1; display: flex; flex-direction: column;"><h1 style="margin: 0; font-size: 22px; font-weight: 700; line-height: 1.3;">المبلغ المطلوب</h1></div></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 0 16px 8px;"><div style="display: flex; gap: 6px;"><div style="flex-grow: 1; height: 6px; border-radius: 3px; background: #0F5E56;"></div><div style="flex-grow: 1; height: 6px; border-radius: 3px; background: #0F5E56;"></div><div style="flex-grow: 1; height: 6px; border-radius: 3px; background: #0F5E56;"></div><div style="flex-grow: 1; height: 6px; border-radius: 3px; background: #DAD5CA;"></div></div><div style="font-size: 13px; color: #5E6A67;">خطوة 3 من 4</div></div><div style="flex-grow: 1; display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 24px; box-sizing: border-box; overflow: hidden;"><div style="font-size: 15px; font-weight: 600;">نوعه إيه؟</div><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;"><button type="button" onClick="{{setMonthly}}" aria-pressed="{{isMonthly}}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px 14px; border-radius: 18px; cursor: pointer; text-align: right; {{mStyle}}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0;"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg><span style="font-size: 17px; font-weight: 700;">اشتراك شهري</span><span style="font-size: 13px; opacity: 0.85;">بيتكرر كل شهر</span></button><button type="button" onClick="{{setOnce}}" aria-pressed="{{isOnce}}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px 14px; border-radius: 18px; cursor: pointer; text-align: right; {{oStyle}}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0;"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2.5"></circle><path d="M6 12h.01M18 12h.01"></path></svg><span style="font-size: 17px; font-weight: 700;">مبلغ مرة واحدة</span><span style="font-size: 13px; opacity: 0.85;">زي كامب أو تيشيرت</span></button></div><sc-if value="{{isMonthly}}" hint-placeholder-val="{{true}}"><div style="display: flex; flex-direction: column; gap: 16px;"><div style="display: flex; flex-direction: column; gap: 6px;"><label for="am" style="font-size: 15px; font-weight: 600;">المبلغ كل شهر</label><div style="display: flex; align-items: center; height: 56px; background: #FFFFFF; border: 1.5px solid #D6D0C4; border-radius: 14px; overflow: hidden;"><input id="am" type="text" value="450" dir="ltr" style="flex-grow: 1; min-width: 0; height: 100%; border: none; outline: none; background: transparent; font-size: 18px; padding: 0 14px; color: #1C2B2A; text-align: right; "><span style="font-size: 16px; color: #5E6A67; font-weight: 600; padding: 0 14px; border-right: 1px solid #E4DFD5; height: 100%; display: flex; align-items: center;">ج.م</span></div></div><div style="display: flex; flex-direction: column; gap: 8px;"><div style="font-size: 15px; font-weight: 600;">يوم كام في الشهر؟</div><div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px;"><sc-for list="{{days}}" as="d" hint-placeholder-count="6"><button type="button" onClick="{{d.pick}}" aria-pressed="{{d.on}}" style="height: 48px; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: pointer; {{d.style}}">{{d.n}}</button></sc-for></div></div></div></sc-if><sc-if value="{{isOnce}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; gap: 16px;"><div style="display: flex; flex-direction: column; gap: 6px;"><label for="on" style="font-size: 15px; font-weight: 600;">اسمه إيه؟</label><div style="display: flex; align-items: center; height: 56px; background: #FFFFFF; border: 1.5px solid #D6D0C4; border-radius: 14px; overflow: hidden;"><input id="on" type="text" value="كامب الصيف" style="flex-grow: 1; min-width: 0; height: 100%; border: none; outline: none; background: transparent; font-size: 18px; padding: 0 14px; color: #1C2B2A; "></div></div><div style="display: flex; flex-direction: column; gap: 6px;"><label for="am2" style="font-size: 15px; font-weight: 600;">المبلغ</label><div style="display: flex; align-items: center; height: 56px; background: #FFFFFF; border: 1.5px solid #D6D0C4; border-radius: 14px; overflow: hidden;"><input id="am2" type="text" value="1,200" dir="ltr" style="flex-grow: 1; min-width: 0; height: 100%; border: none; outline: none; background: transparent; font-size: 18px; padding: 0 14px; color: #1C2B2A; text-align: right; "><span style="font-size: 16px; color: #5E6A67; font-weight: 600; padding: 0 14px; border-right: 1px solid #E4DFD5; height: 100%; display: flex; align-items: center;">ج.م</span></div></div><div style="display: flex; flex-direction: column; gap: 6px;"><label for="dd" style="font-size: 15px; font-weight: 600;">آخر ميعاد للدفع</label><div style="display: flex; align-items: center; height: 56px; background: #FFFFFF; border: 1.5px solid #D6D0C4; border-radius: 14px; overflow: hidden;"><input id="dd" type="date" value="2026-09-30" dir="ltr" style="flex-grow: 1; min-width: 0; height: 100%; border: none; outline: none; background: transparent; font-size: 18px; padding: 0 14px; color: #1C2B2A; text-align: right; "></div></div></div></sc-if><div style="display: flex; flex-direction: column; gap: 8px;"><div style="display: flex; align-items: center; justify-content: space-between;"><div style="font-size: 15px; font-weight: 600;">لمين؟</div><button type="button" onClick="{{toggleAll}}" style="border: none; background: transparent; color: #0F5E56; font-size: 15px; font-weight: 700; min-height: 44px; cursor: pointer;">{{allLabel}}</button></div><div style="background: #FFFFFF; border: 1px solid #E4DFD5; border-radius: 16px; overflow: hidden;"><sc-for list="{{custs}}" as="c" hint-placeholder-count="8"><label style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 14px; border-bottom: 1px solid #EFEBE3; cursor: pointer; font-size: 16px;"><input type="checkbox" checked="{{c.on}}" onChange="{{c.toggle}}" style="width: 22px; height: 22px; accent-color: #0F5E56; margin: 0;"><span style="flex-grow: 1;">{{c.name}}</span></label></sc-for></div></div><div style="flex-grow: 1;"></div><a href="ReminderSettings.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 56px; padding: 0 20px; border-radius: 14px; font-size: 18px; font-weight: 700; text-decoration: none; cursor: pointer; box-sizing: border-box; font-family: inherit; width: 100%; background: #0F5E56; color: #FFFFFF; border: none;">احفظ لـ {{count}} عملاء</a></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 375, "height": 1240}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { type: 'monthly', day: 20, off: {} }; }
+  renderVals() {
+    const sel = 'background: #E2EEEB; color: #0F5E56; border: 2px solid #0F5E56;';
+    const uns = 'background: #FFFFFF; color: #1C2B2A; border: 1.5px solid #D6D0C4;';
+    const dOn = 'background: #0F5E56; color: #FFFFFF; border: none;';
+    const dOff = 'background: #FFFFFF; color: #1C2B2A; border: 1.5px solid #D6D0C4;';
+    const names = ["محمود حسن", "سارة عادل", "كريم فتحي", "منى إبراهيم", "أحمد السيد", "ياسمين طارق", "عمر خالد", "هبة مصطفى"];
+    const off = this.state.off;
+    const count = names.filter(n => !off[n]).length;
+    const all = count === names.length;
+    return {
+      isMonthly: this.state.type === 'monthly', isOnce: this.state.type === 'once',
+      mStyle: this.state.type === 'monthly' ? sel : uns, oStyle: this.state.type === 'once' ? sel : uns,
+      setMonthly: () => this.setState({ type: 'monthly' }), setOnce: () => this.setState({ type: 'once' }),
+      days: [1, 5, 10, 15, 20, 25].map(n => ({ n, on: this.state.day === n, style: this.state.day === n ? dOn : dOff, pick: () => this.setState({ day: n }) })),
+      custs: names.map(n => ({ name: n, on: !off[n], toggle: () => this.setState({ off: Object.assign({}, off, { [n]: !off[n] }) }) })),
+      count,
+      allLabel: all ? 'شيل الكل' : 'اختار الكل',
+      toggleAll: () => { const o = {}; if (all) names.forEach(n => { o[n] = true; }); this.setState({ off: o }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

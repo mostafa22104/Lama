@@ -1,0 +1,6 @@
+.yarn/
+dist/
+coverage/
+lamma-design-handoff/
+apps/backend/src/generated/
+apps/backend/prisma/migrations/

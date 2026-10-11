@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.env
+.env.local
+apps/backend/src/generated/
+apps/backend/uploads/
+.yarn/*
+!.yarn/releases

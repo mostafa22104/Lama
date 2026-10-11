@@ -1,0 +1,22 @@
+{
+  "name": "lamma",
+  "private": true,
+  "packageManager": "yarn@4.18.1",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build:shared": "yarn workspace @lamma/shared build",
+    "test": "yarn build:shared && yarn workspaces foreach -A --exclude lamma run test",
+    "test:e2e": "yarn build:shared && yarn workspace @lamma/backend test:e2e",
+    "lint": "yarn build:shared && yarn workspaces foreach -A --exclude lamma run lint",
+    "format": "prettier --write .",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.2"
+  }
+}

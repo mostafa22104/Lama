@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>حساب جديد</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'IBM Plex Sans Arabic', 'Noto Sans Arabic', Tahoma, sans-serif;background:#F6F4EF;color:#1C2B2A}
+a{color:#0F5E56}a:hover{color:#0A4540}
+button,input,select{font-family:inherit}
+details summary::-webkit-details-marker{display:none}
+@keyframes lammaSpin{to{transform:rotate(360deg)}}
+@keyframes lammaScan{0%{top:8%}50%{top:88%}100%{top:8%}}
+@keyframes lammaPulse{0%,100%{opacity:1}50%{opacity:.45}}
+
+</style>
+</helmet>
+<div dir="rtl" style="margin: 0 auto; width: 375px; height: 960px; display: flex; flex-direction: column; background: #F6F4EF; color: #1C2B2A; font-family: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', Tahoma, sans-serif; overflow: hidden; box-sizing: border-box; position: relative;"><div style="display: flex; align-items: center; gap: 12px; padding: 16px 16px 8px; min-height: 60px; box-sizing: border-box;"><a href="Main.dc.html" aria-label="رجوع" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #1C2B2A; background: #FFFFFF; border: 1px solid #E4DFD5; flex-shrink: 0;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a><div style="flex-grow: 1; display: flex; flex-direction: column;"><h1 style="margin: 0; font-size: 22px; font-weight: 700; line-height: 1.3;">حساب جديد</h1></div></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 0 16px 8px;"><div style="display: flex; gap: 6px;"><div style="flex-grow: 1; height: 6px; border-radius: 3px; background: #0F5E56;"></div><div style="flex-grow: 1; height: 6px; border-radius: 3px; background: #DAD5CA;"></div><div style="flex-grow: 1; height: 6px; border-radius: 3px; background: #DAD5CA;"></div><div style="flex-grow: 1; height: 6px; border-radius: 3px; background: #DAD5CA;"></div></div><div style="font-size: 13px; color: #5E6A67;">خطوة 1 من 4</div></div><div style="flex-grow: 1; display: flex; flex-direction: column; gap: 18px; padding: 8px 16px 24px; box-sizing: border-box; overflow: hidden;"><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; background: #E7E2D8; border-radius: 14px;"><button type="button" onClick="{{usePhone}}" style="height: 44px; border: none; border-radius: 11px; font-size: 16px; font-weight: 600; cursor: pointer; {{phoneTab}}">موبايل</button><button type="button" onClick="{{useEmail}}" style="height: 44px; border: none; border-radius: 11px; font-size: 16px; font-weight: 600; cursor: pointer; {{emailTab}}">إيميل</button></div><sc-if value="{{isPhone}}" hint-placeholder-val="{{true}}"><div style="display: flex; flex-direction: column; gap: 6px;"><label for="ph" style="font-size: 15px; font-weight: 600;">رقم الموبايل</label><div style="display: flex; align-items: center; height: 56px; background: #FFFFFF; border: 1.5px solid #D6D0C4; border-radius: 14px; overflow: hidden;"><input id="ph" type="tel" value="010 1234 5678" dir="ltr" style="flex-grow: 1; min-width: 0; height: 100%; border: none; outline: none; background: transparent; font-size: 18px; padding: 0 14px; color: #1C2B2A; text-align: right; "></div></div></sc-if><sc-if value="{{isEmail}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; gap: 6px;"><label for="em" style="font-size: 15px; font-weight: 600;">الإيميل</label><div style="display: flex; align-items: center; height: 56px; background: #FFFFFF; border: 1.5px solid #D6D0C4; border-radius: 14px; overflow: hidden;"><input id="em" type="email" value="walid.nogoum@gmail.com" dir="ltr" style="flex-grow: 1; min-width: 0; height: 100%; border: none; outline: none; background: transparent; font-size: 18px; padding: 0 14px; color: #1C2B2A; text-align: right; "></div></div></sc-if><div style="display: flex; flex-direction: column; gap: 6px;"><label for="bn" style="font-size: 15px; font-weight: 600;">اسم النشاط</label><div style="display: flex; align-items: center; height: 56px; background: #FFFFFF; border: 1.5px solid #D6D0C4; border-radius: 14px; overflow: hidden;"><input id="bn" type="text" value="أكاديمية النجوم للكرة" style="flex-grow: 1; min-width: 0; height: 100%; border: none; outline: none; background: transparent; font-size: 18px; padding: 0 14px; color: #1C2B2A; "></div></div><div style="display: flex; flex-direction: column; gap: 8px;"><div style="font-size: 15px; font-weight: 600;">نوع النشاط</div><div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;"><sc-for list="{{types}}" as="t" hint-placeholder-count="5"><button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="height: 52px; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; {{t.style}}">{{t.label}}</button></sc-for></div></div><div style="display: flex; flex-direction: column; gap: 6px;"><label for="ip" style="font-size: 15px; font-weight: 600;">عنوان InstaPay</label><div style="display: flex; align-items: center; height: 56px; background: #FFFFFF; border: 1.5px solid #D6D0C4; border-radius: 14px; overflow: hidden;"><input id="ip" type="text" value="nogoum.academy@instapay" dir="ltr" style="flex-grow: 1; min-width: 0; height: 100%; border: none; outline: none; background: transparent; font-size: 18px; padding: 0 14px; color: #1C2B2A; text-align: right; "></div><div style="font-size: 13px; color: #5E6A67;">ده العنوان اللي عملاءك هيحوّلوا عليه</div></div><div style="flex-grow: 1;"></div><a href="AddCustomers.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 56px; padding: 0 20px; border-radius: 14px; font-size: 18px; font-weight: 700; text-decoration: none; cursor: pointer; box-sizing: border-box; font-family: inherit; width: 100%; background: #0F5E56; color: #FFFFFF; border: none;"><span>كمّل</span></a></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 375, "height": 960}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { mode: 'phone', type: 'academy' }; }
+  renderVals() {
+    const on = 'background: #0F5E56; color: #FFFFFF; border: 1.5px solid #0F5E56;';
+    const off = 'background: #FFFFFF; color: #1C2B2A; border: 1.5px solid #D6D0C4;';
+    const tab = 'background: #FFFFFF; color: #0F5E56; box-shadow: 0 1px 3px rgba(0,0,0,0.12);';
+    const tabOff = 'background: transparent; color: #5E6A67;';
+    const list = [['academy','أكاديمية'],['building','عمارة'],['tutor','مدرّس'],['nursery','حضانة'],['other','حاجة تانية']];
+    return {
+      isPhone: this.state.mode === 'phone', isEmail: this.state.mode === 'email',
+      phoneTab: this.state.mode === 'phone' ? tab : tabOff, emailTab: this.state.mode === 'email' ? tab : tabOff,
+      usePhone: () => this.setState({ mode: 'phone' }), useEmail: () => this.setState({ mode: 'email' }),
+      types: list.map(([k, l]) => ({ label: l, on: this.state.type === k, style: this.state.type === k ? on : off, pick: () => this.setState({ type: k }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

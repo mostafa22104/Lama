@@ -1,0 +1,294 @@
+{
+ "v": 3,
+ "attachments": {},
+ "boards": {
+  "AddCharge.dc.html": {
+   "h": 1240,
+   "is_interactive": true,
+   "title": "A4 · المبلغ المطلوب",
+   "w": 375,
+   "x": 2275,
+   "y": 0
+  },
+  "AddCustomers.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "A3 · ضيف عملاءك",
+   "w": 375,
+   "x": 910,
+   "y": 0
+  },
+  "AlreadyPaid.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "B5 · مدفوع بالفعل",
+   "w": 375,
+   "x": 2730,
+   "y": 7340
+  },
+  "Components.dc.html": {
+   "h": 1260,
+   "is_interactive": true,
+   "title": "المكوّنات",
+   "w": 1280,
+   "x": 910,
+   "y": 8760
+  },
+  "Confirmations.dc.html": {
+   "h": 1560,
+   "is_interactive": true,
+   "title": "A8 · تأكيد الدفع",
+   "w": 375,
+   "x": 910,
+   "y": 3980
+  },
+  "CustomerProfile.dc.html": {
+   "h": 1180,
+   "is_interactive": true,
+   "title": "A9 · ملف العميل",
+   "w": 375,
+   "x": 1820,
+   "y": 3980
+  },
+  "Customers.dc.html": {
+   "h": 1100,
+   "is_interactive": true,
+   "title": "العملاء",
+   "w": 375,
+   "x": 1365,
+   "y": 3980
+  },
+  "DashboardDesktop.dc.html": {
+   "h": 960,
+   "is_interactive": true,
+   "title": "A6 · الرئيسية (1280)",
+   "w": 1280,
+   "x": 0,
+   "y": 5960
+  },
+  "EmptyCustomers.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "فاضي · مفيش عملاء",
+   "w": 375,
+   "x": 0,
+   "y": 8760
+  },
+  "EmptyReminders.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "فاضي · مفيش تذكيرات",
+   "w": 375,
+   "x": 455,
+   "y": 8760
+  },
+  "Home.dc.html": {
+   "h": 1180,
+   "is_interactive": true,
+   "title": "A6 · الرئيسية",
+   "w": 375,
+   "x": 0,
+   "y": 3980
+  },
+  "Main.dc.html": {
+   "h": 3560,
+   "is_interactive": true,
+   "title": "A1 · الصفحة الرئيسية",
+   "w": 375,
+   "x": 0,
+   "y": 0
+  },
+  "NotebookReview.dc.html": {
+   "h": 1000,
+   "is_interactive": true,
+   "title": "A3 · مراجعة الجدول",
+   "w": 375,
+   "x": 1820,
+   "y": 0
+  },
+  "NotebookScan.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "A3 · تحميل: بنقرا الكشكول",
+   "w": 375,
+   "x": 1365,
+   "y": 0
+  },
+  "PayPage.dc.html": {
+   "h": 1000,
+   "is_interactive": true,
+   "title": "B2 · صفحة الدفع",
+   "w": 375,
+   "x": 455,
+   "y": 7340
+  },
+  "PayThanks.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "B4 · استلمنا الإثبات",
+   "w": 375,
+   "x": 1820,
+   "y": 7340
+  },
+  "ReminderSettings.dc.html": {
+   "h": 1000,
+   "is_interactive": true,
+   "title": "A5 · التذكيرات",
+   "w": 375,
+   "x": 2730,
+   "y": 0
+  },
+  "Reminders.dc.html": {
+   "h": 1040,
+   "is_interactive": true,
+   "title": "A7 · تذكيرات النهارده",
+   "w": 375,
+   "x": 455,
+   "y": 3980
+  },
+  "Report.dc.html": {
+   "h": 1300,
+   "is_interactive": true,
+   "title": "A10 · تقرير الشهر",
+   "w": 375,
+   "x": 2275,
+   "y": 3980
+  },
+  "Settings.dc.html": {
+   "h": 1420,
+   "is_interactive": true,
+   "title": "A11 · الإعدادات والباقة",
+   "w": 375,
+   "x": 2730,
+   "y": 3980
+  },
+  "Signup.dc.html": {
+   "h": 960,
+   "is_interactive": true,
+   "title": "A2 · حساب جديد",
+   "w": 375,
+   "x": 455,
+   "y": 0
+  },
+  "Start.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "ابدأ هنا",
+   "w": 375,
+   "x": -535,
+   "y": 0
+  },
+  "UploadError.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "خطأ · الصورة مش واضحة",
+   "w": 375,
+   "x": 1365,
+   "y": 7340
+  },
+  "UploadProof.dc.html": {
+   "h": 900,
+   "is_interactive": true,
+   "title": "B3 · ارفع الصورة",
+   "w": 375,
+   "x": 910,
+   "y": 7340
+  },
+  "WaConfirmed.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "B4 · رسالة التأكيد",
+   "w": 375,
+   "x": 2275,
+   "y": 7340
+  },
+  "WaReminder.dc.html": {
+   "h": 812,
+   "is_interactive": true,
+   "title": "B1 · رسالة التذكير",
+   "w": 375,
+   "x": 0,
+   "y": 7340
+  }
+ },
+ "createdOnFiles": {
+  "at": "2026-09-23T16:05:27Z",
+  "v": 1
+ },
+ "designSystems": [],
+ "launch": {
+  "view": "canvas"
+ },
+ "notes": {
+  "cust": {
+   "kind": "title1",
+   "maxW": 3105,
+   "text": "العميل: من واتساب للدفع (من غير حساب)",
+   "w": 240,
+   "x": 0,
+   "y": 7080
+  },
+  "desk": {
+   "kind": "title1",
+   "maxW": 1280,
+   "text": "الرئيسية على الكمبيوتر",
+   "w": 240,
+   "x": 0,
+   "y": 5700
+  },
+  "owner1": {
+   "kind": "title1",
+   "maxW": 3105,
+   "text": "صاحب النشاط: البداية",
+   "w": 240,
+   "x": 0,
+   "y": -260
+  },
+  "owner2": {
+   "kind": "title1",
+   "maxW": 3105,
+   "text": "صاحب النشاط: كل يوم",
+   "w": 240,
+   "x": 0,
+   "y": 3720
+  },
+  "states": {
+   "kind": "title1",
+   "maxW": 2190,
+   "text": "حالات فاضية ومكوّنات",
+   "w": 240,
+   "x": 0,
+   "y": 8500
+  }
+ },
+ "order": [
+  "Start.dc.html",
+  "Main.dc.html",
+  "Signup.dc.html",
+  "AddCustomers.dc.html",
+  "NotebookScan.dc.html",
+  "NotebookReview.dc.html",
+  "AddCharge.dc.html",
+  "ReminderSettings.dc.html",
+  "Home.dc.html",
+  "Reminders.dc.html",
+  "Confirmations.dc.html",
+  "Customers.dc.html",
+  "CustomerProfile.dc.html",
+  "Report.dc.html",
+  "Settings.dc.html",
+  "DashboardDesktop.dc.html",
+  "WaReminder.dc.html",
+  "PayPage.dc.html",
+  "UploadProof.dc.html",
+  "UploadError.dc.html",
+  "PayThanks.dc.html",
+  "WaConfirmed.dc.html",
+  "AlreadyPaid.dc.html",
+  "EmptyCustomers.dc.html",
+  "EmptyReminders.dc.html",
+  "Components.dc.html"
+ ],
+ "pages": [],
+ "title": "لمّة — شاشات الـ MVP"
+}

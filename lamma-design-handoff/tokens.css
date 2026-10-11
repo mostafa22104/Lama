@@ -1,0 +1,41 @@
+/* Lamma design tokens — drop into your global CSS (or map into tailwind.config theme.extend) */
+:root {
+  --font-sans: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', Tahoma, sans-serif;
+
+  --bg: #F6F4EF;
+  --surface: #FFFFFF;
+  --ink: #1C2B2A;
+  --muted: #5E6A67;
+  --line: #E4DFD5;
+  --input-border: #D6D0C4;
+  --primary: #0F5E56;
+  --primary-dark: #0A4540;
+  --primary-soft: #E2EEEB;
+  --gold: #B7791F;
+  --gold-soft: #F6ECD8;
+  --whatsapp: #177A45;
+  --whatsapp-soft: #DCF3E4;
+  --danger: #A8231B;
+  --danger-soft: #FBE4E1;
+  --disabled-bg: #D9D5CC;
+  --chat-bg: #EFE7DC;
+
+  /* payment status chips */
+  --status-paid-fg: #1B6B43;     --status-paid-bg: #E2F1E8;
+  --status-soon-fg: #8A5300;     --status-soon-bg: #FBEFD6;
+  --status-overdue-fg: #A8231B;  --status-overdue-bg: #FBE4E1;
+  --status-waiting-fg: #2A578F;  --status-waiting-bg: #E4ECF7;
+
+  --radius-button: 14px;
+  --radius-input: 14px;
+  --radius-card: 18px;
+  --radius-card-lg: 22px;
+
+  --h-button: 56px;
+  --h-button-sm: 52px;
+  --h-input: 56px;
+  --tap-min: 44px;
+}
+
+html { direction: rtl; }
+body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--ink); }
