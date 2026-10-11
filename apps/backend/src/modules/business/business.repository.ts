@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { ContactChannel } from '@lamma/shared';
+import type { BusinessUpdate, ContactChannel } from '@lamma/shared';
 import type { Business } from '../../generated/prisma/client.js';
 import { PrismaService } from '../../infra/prisma/prisma.service.js';
 import type { NewBusinessInput } from './business.types.js';
@@ -28,5 +28,17 @@ export class BusinessRepository {
         reminderRule: { create: {} },
       },
     });
+  }
+
+  update(id: string, data: BusinessUpdate): Promise<Business> {
+    return this.prisma.business.update({ where: { id }, data });
+  }
+
+  countActiveCustomers(businessId: string): Promise<number> {
+    return this.prisma.customer.count({ where: { businessId, archivedAt: null } });
+  }
+
+  markUpgradeRequested(id: string, at: Date): Promise<Business> {
+    return this.prisma.business.update({ where: { id }, data: { planUpgradeRequestedAt: at } });
   }
 }
