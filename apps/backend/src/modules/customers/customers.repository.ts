@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { type MonthlyTerms, toWesternDigits } from '@lamma/shared';
 import type { Customer, Prisma } from '../../generated/prisma/client.js';
 import { PrismaService } from '../../infra/prisma/prisma.service.js';
 import type { CustomerRow } from './customer-input.js';
@@ -19,6 +20,28 @@ export class CustomersRepository {
 
   findOwned(businessId: string, id: string): Promise<Customer | null> {
     return this.prisma.customer.findFirst({ where: { id, businessId, archivedAt: null } });
+  }
+
+  findActive(businessId: string, search?: string): Promise<Customer[]> {
+    const where: Prisma.CustomerWhereInput = { businessId, archivedAt: null };
+    if (search) {
+      const digits = toWesternDigits(search).replace(/\D/g, '').replace(/^0+/, '');
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        ...(digits.length >= 3 ? [{ phone: { contains: digits } }] : []),
+      ];
+    }
+    return this.prisma.customer.findMany({ where });
+  }
+
+  async activeMonthlyTerms(customerId: string): Promise<MonthlyTerms[]> {
+    const rows = await this.prisma.chargeAssignment.findMany({
+      where: { customerId, charge: { kind: 'monthly', active: true } },
+      select: { charge: { select: { amount: true, dayOfMonth: true } } },
+    });
+    return rows.flatMap(({ charge }) =>
+      charge.dayOfMonth === null ? [] : [{ amount: charge.amount, dayOfMonth: charge.dayOfMonth }],
+    );
   }
 
   update(id: string, data: Prisma.CustomerUpdateInput): Promise<Customer> {

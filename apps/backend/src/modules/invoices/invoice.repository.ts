@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { toIsoDate } from '../../common/dates/date-codec.js';
 import { PrismaService } from '../../infra/prisma/prisma.service.js';
+import { INVOICE_SELECT, type InvoiceRecord } from './invoice-record.js';
 import type { ChargeTerms, InvoiceRow } from './invoice-rows.js';
 
 export interface GenerationCharge extends ChargeTerms {
@@ -41,5 +42,34 @@ export class InvoiceRepository {
       data: rows.map((row) => ({ ...row, businessId })),
       skipDuplicates: true,
     });
+  }
+
+  findOpen(businessId: string): Promise<InvoiceRecord[]> {
+    return this.prisma.invoice.findMany({
+      where: { businessId, paidAt: null, customer: { archivedAt: null } },
+      select: INVOICE_SELECT,
+      orderBy: { dueDate: 'asc' },
+    });
+  }
+
+  async invoicedCustomerIds(businessId: string): Promise<Set<string>> {
+    const rows = await this.prisma.invoice.findMany({
+      where: { businessId },
+      distinct: ['customerId'],
+      select: { customerId: true },
+    });
+    return new Set(rows.map((row) => row.customerId));
+  }
+
+  findForCustomer(businessId: string, customerId: string): Promise<InvoiceRecord[]> {
+    return this.prisma.invoice.findMany({
+      where: { businessId, customerId },
+      select: INVOICE_SELECT,
+      orderBy: { dueDate: 'desc' },
+    });
+  }
+
+  findOwned(businessId: string, id: string): Promise<InvoiceRecord | null> {
+    return this.prisma.invoice.findFirst({ where: { id, businessId }, select: INVOICE_SELECT });
   }
 }

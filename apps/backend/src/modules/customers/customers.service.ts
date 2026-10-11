@@ -1,10 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { canAddCustomers, type CustomerInput, type CustomerUpdate, PLAN_LIMITS } from '@lamma/shared';
+import {
+  canAddCustomers,
+  type CustomerDetailDto,
+  type CustomerInput,
+  type CustomerListItemDto,
+  type CustomerUpdate,
+  type InvoiceStatus,
+  type InvoiceSummaryDto,
+  nextMonthlyDue,
+  PLAN_LIMITS,
+  statusPriority,
+} from '@lamma/shared';
 import { Clock } from '../../common/clock/clock.js';
+import { businessToday } from '../../common/dates/date-codec.js';
 import { AppError } from '../../common/errors/app-error.js';
 import type { Customer } from '../../generated/prisma/client.js';
 import { BusinessService } from '../business/index.js';
+import { InvoiceQueryService } from '../invoices/index.js';
 import { normalizeCustomerPhone, toCustomerRow } from './customer-input.js';
+import { buildCustomerListItem } from './customer-summary.js';
+import { toCustomerDto } from './customer.mapper.js';
 import { CustomersRepository } from './customers.repository.js';
 
 @Injectable()
@@ -13,6 +28,7 @@ export class CustomersService {
     private readonly customers: CustomersRepository,
     private readonly businesses: BusinessService,
     private readonly clock: Clock,
+    private readonly invoices: InvoiceQueryService,
   ) {}
 
   async create(businessId: string, input: CustomerInput): Promise<Customer> {
@@ -33,6 +49,37 @@ export class CustomersService {
   async archive(businessId: string, id: string): Promise<void> {
     await this.getOwned(businessId, id);
     await this.customers.archive(id, this.clock.now());
+  }
+
+  async list(businessId: string, query: { search?: string; status?: InvoiceStatus }): Promise<CustomerListItemDto[]> {
+    const today = businessToday(this.clock.now());
+    const open = await this.invoices.openInvoices(businessId, today);
+    const invoiced = await this.invoices.invoicedCustomerIds(businessId);
+    const customers = await this.customers.findActive(businessId, query.search);
+
+    const openByCustomer = new Map<string, InvoiceSummaryDto[]>();
+    for (const { summary } of open) {
+      openByCustomer.set(summary.customerId, [...(openByCustomer.get(summary.customerId) ?? []), summary]);
+    }
+    const items = customers.map((customer) =>
+      buildCustomerListItem(toCustomerDto(customer), openByCustomer.get(customer.id) ?? [], invoiced.has(customer.id)),
+    );
+    const rank = (status: InvoiceStatus | null) => (status ? statusPriority(status) : Number.MAX_SAFE_INTEGER);
+    return items
+      .filter((item) => !query.status || item.status === query.status)
+      .sort((a, b) => rank(a.status) - rank(b.status) || a.name.localeCompare(b.name, 'ar'));
+  }
+
+  async detail(businessId: string, id: string): Promise<CustomerDetailDto> {
+    const customer = await this.getOwned(businessId, id);
+    const today = businessToday(this.clock.now());
+    const invoices = await this.invoices.customerInvoices(businessId, id, today);
+    const open = invoices.filter((invoice) => invoice.status !== 'paid').sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+    return {
+      ...buildCustomerListItem(toCustomerDto(customer), open, invoices.length > 0),
+      openInvoices: open,
+      nextDue: nextMonthlyDue(await this.customers.activeMonthlyTerms(id), today),
+    };
   }
 
   async getOwned(businessId: string, id: string): Promise<Customer> {
