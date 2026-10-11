@@ -1,3 +1,3 @@
-import { config } from 'dotenv';
+import { applyTestEnv } from './support/load-test-env.js';
 
-config({ path: '.env.test', override: true, quiet: true });
+applyTestEnv();

@@ -36,8 +36,9 @@ npx prisma dev --name lamma-test --detach   # test database
 npx prisma dev ls                           # shows the TCP URL of each server
 ```
 
-Put the first TCP URL in `DATABASE_URL` in `apps/backend/.env` and the second in `apps/backend/.env.test`.
-`.env.test` is committed with a sample prisma-dev URL that may differ per machine, so update it locally.
+Put the first TCP URL in `DATABASE_URL` in `apps/backend/.env` and the second in `apps/backend/.env.test.local`
+(git-ignored; it overrides the Docker default committed in `.env.test`), e.g.
+`DATABASE_URL=<second URL>` as its only line.
 After a reboot, restart both servers with `npx prisma dev start lamma lamma-test`.
 
 ## Everyday commands

@@ -4,6 +4,7 @@ coverage/
 *.tsbuildinfo
 .env
 .env.local
+.env.test.local
 apps/backend/src/generated/
 apps/backend/uploads/
 .yarn/*

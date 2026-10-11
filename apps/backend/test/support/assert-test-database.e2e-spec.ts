@@ -1,9 +1,8 @@
-import { readFileSync } from 'node:fs';
-import { parse } from 'dotenv';
 import { afterEach, describe, expect, it } from 'vitest';
 import { assertTestDatabase } from './assert-test-database.js';
+import { loadTestEnv } from './load-test-env.js';
 
-const testUrl = parse(readFileSync('.env.test', 'utf8'))['DATABASE_URL'] as string;
+const testUrl = loadTestEnv()['DATABASE_URL'] as string;
 
 describe('assertTestDatabase', () => {
   const originalEnv = process.env['NODE_ENV'];
