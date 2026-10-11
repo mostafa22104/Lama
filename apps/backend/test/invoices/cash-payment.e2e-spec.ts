@@ -52,4 +52,12 @@ describe('cash payments (e2e)', () => {
     await api.post(`/invoices/${foreign.id}/cash-payment`).expect(404);
     await api.post('/invoices/nope/cash-payment').expect(404);
   });
+
+  it("answers 404 for an archived customer's invoice", async () => {
+    const { business, api } = await createOwner(t);
+    const invoice = await invoiceFor(business.id);
+    await api.delete(`/customers/${invoice.customerId}`).expect(204);
+    await api.post(`/invoices/${invoice.id}/cash-payment`).expect(404);
+    expect(await t.prisma.payment.count({ where: { invoiceId: invoice.id } })).toBe(0);
+  });
 });

@@ -7,12 +7,13 @@ describe("today's reminders (e2e)", () => {
   let t: TestApp;
   let api: OwnerApi;
   let ids: Record<string, string>;
+  let businessId: string;
 
   beforeEach(async () => {
     t = await createTestApp();
     const owner = await createOwner(t);
     api = owner.api;
-    const businessId = owner.business.id;
+    businessId = owner.business.id;
     const customer = (name: string, phone: string, gender: 'male' | 'female' | null = null) =>
       createCustomer(t.prisma, businessId, { name, phone, gender });
     const sara = await customer('سارة', '+201112345678', 'female');
@@ -40,6 +41,22 @@ describe("today's reminders (e2e)", () => {
 
   afterEach(async () => {
     await t.app.close();
+  });
+
+  it('hides archived customers from reminders', async () => {
+    const archived = await createCustomer(t.prisma, businessId, { name: 'مؤرشف', phone: '+201012345690', archivedAt: new Date() });
+    const charge = await createCharge(t.prisma, businessId, [archived.id]);
+    const hidden = await createInvoice(t.prisma, {
+      businessId,
+      chargeId: charge.id,
+      customerId: archived.id,
+      period: '2026-09',
+      dueDate: new Date('2026-09-26T00:00:00.000Z'),
+    });
+    const res = await api.get('/reminders/today').expect(200);
+    expect(res.body.items.map((i: { invoiceId: string }) => i.invoiceId)).not.toContain(hidden.id);
+    await api.get(`/reminders/invoices/${hidden.id}`).expect(404);
+    await api.post(`/reminders/${hidden.id}/sent`, { kind: 'before' }).expect(404);
   });
 
   it('lists the reminders due today in order, with ready-to-send messages', async () => {

@@ -25,7 +25,7 @@ export class DashboardService {
     const period = periodOf(today);
     const business = await this.businesses.getById(businessId);
     const open = await this.invoices.openInvoices(businessId, today);
-    const totals = await this.invoices.periodSummary(businessId, period);
+    const totals = await this.invoices.periodSummary(businessId, period, today);
     const reminders = await this.reminders.today(businessId);
     const overdueCustomers = await this.customers.list(businessId, { status: 'overdue' });
 

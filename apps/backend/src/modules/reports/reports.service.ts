@@ -14,10 +14,11 @@ export class ReportsService {
   ) {}
 
   async monthly(businessId: string, requested?: string): Promise<MonthlyReportDto> {
-    const period = requested ?? periodOf(businessToday(this.clock.now()));
+    const today = businessToday(this.clock.now());
+    const period = requested ?? periodOf(today);
     const stillLate = await this.customers.list(businessId, { status: 'overdue' });
-    const current = await this.invoices.periodSummary(businessId, period);
-    const previous = await this.invoices.periodSummary(businessId, previousPeriod(period));
+    const current = await this.invoices.periodSummary(businessId, period, today);
+    const previous = await this.invoices.periodSummary(businessId, previousPeriod(period), today);
     return {
       period,
       expected: current.expected,

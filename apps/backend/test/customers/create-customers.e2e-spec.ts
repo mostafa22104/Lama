@@ -30,6 +30,12 @@ describe('creating customers (e2e)', () => {
     });
   });
 
+  it('stores a blank note as null', async () => {
+    const { api } = await createOwner(t);
+    const res = await api.post('/customers', { name: 'محمود', phone: '010 2345 6781', note: '   ' }).expect(201);
+    expect(res.body.note).toBeNull();
+  });
+
   it('allows the same phone twice (siblings share a parent)', async () => {
     const { api } = await createOwner(t);
     await api.post('/customers', { name: 'يوسف', phone: '01023456781' }).expect(201);

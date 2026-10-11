@@ -40,7 +40,9 @@ export class InvoiceQueryService {
   async periodSummary(
     businessId: string,
     period: string,
+    today: IsoDate,
   ): Promise<{ expected: number; collected: number; invoiceCount: number; paidCount: number }> {
+    await this.generator.ensureUpToDate(businessId, today);
     const rows = await this.invoices.findForPeriod(businessId, period);
     const paid = rows.filter((row) => row.paidAt !== null);
     return {

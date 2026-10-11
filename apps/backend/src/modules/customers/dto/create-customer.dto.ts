@@ -2,6 +2,7 @@ import { type CustomerInput, type Gender, GENDERS } from '@lamma/shared';
 import { Transform } from 'class-transformer';
 import { IsIn, IsOptional, IsString, Length, MaxLength } from 'class-validator';
 import { trim } from '../../../common/validation/trim.js';
+import { trimOrNull } from '../../../common/validation/trim-or-null.js';
 
 export class CreateCustomerDto implements CustomerInput {
   @Transform(trim)
@@ -14,7 +15,7 @@ export class CreateCustomerDto implements CustomerInput {
   phone: string;
 
   @IsOptional()
-  @Transform(trim)
+  @Transform(trimOrNull)
   @IsString()
   @MaxLength(120)
   note?: string | null;

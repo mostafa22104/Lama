@@ -14,6 +14,18 @@ describe('parseEnv', () => {
     expect(() => parseEnv({ ...valid, WEB_BASE_URL: 'not a url' })).toThrow(/WEB_BASE_URL/);
   });
 
+  it('requires an explicit http(s) WEB_BASE_URL in production', () => {
+    const prod = { ...valid, NODE_ENV: 'production' };
+    expect(() => parseEnv(prod)).toThrow(/WEB_BASE_URL/);
+    expect(parseEnv({ ...prod, WEB_BASE_URL: 'https://lamma.app' }).WEB_BASE_URL).toBe('https://lamma.app');
+    expect(parseEnv({ ...valid, NODE_ENV: 'test' }).WEB_BASE_URL).toBe('http://localhost:3001');
+  });
+
+  it('rejects non-http WEB_BASE_URL schemes', () => {
+    expect(() => parseEnv({ ...valid, WEB_BASE_URL: 'javascript:alert(1)' })).toThrow(/WEB_BASE_URL/);
+    expect(() => parseEnv({ ...valid, WEB_BASE_URL: 'ftp://x' })).toThrow(/WEB_BASE_URL/);
+  });
+
   it('applies defaults for optional values', () => {
     const env = parseEnv(valid);
     expect(env).toMatchObject({

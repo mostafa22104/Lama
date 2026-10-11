@@ -3,6 +3,7 @@ import { Transform } from 'class-transformer';
 import { IsIn, IsOptional, IsString, Length, MaxLength } from 'class-validator';
 import { IsOptionalNotNull } from '../../../common/validation/optional-not-null.js';
 import { trim } from '../../../common/validation/trim.js';
+import { trimOrNull } from '../../../common/validation/trim-or-null.js';
 
 export class UpdateCustomerDto implements CustomerUpdate {
   @IsOptionalNotNull()
@@ -17,7 +18,7 @@ export class UpdateCustomerDto implements CustomerUpdate {
   phone?: string;
 
   @IsOptional()
-  @Transform(trim)
+  @Transform(trimOrNull)
   @IsString()
   @MaxLength(120)
   note?: string | null;

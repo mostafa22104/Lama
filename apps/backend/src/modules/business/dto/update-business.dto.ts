@@ -3,6 +3,7 @@ import { Transform } from 'class-transformer';
 import { IsBoolean, IsOptional, IsString, Length, MaxLength } from 'class-validator';
 import { IsOptionalNotNull } from '../../../common/validation/optional-not-null.js';
 import { trim } from '../../../common/validation/trim.js';
+import { trimOrNull } from '../../../common/validation/trim-or-null.js';
 
 export class UpdateBusinessDto implements BusinessUpdate {
   @IsOptionalNotNull()
@@ -18,7 +19,7 @@ export class UpdateBusinessDto implements BusinessUpdate {
   instapayAddress?: string;
 
   @IsOptional()
-  @Transform(trim)
+  @Transform(trimOrNull)
   @IsString()
   @MaxLength(80)
   area?: string | null;

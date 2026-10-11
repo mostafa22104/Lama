@@ -5,6 +5,9 @@ import { PrismaService } from '../../infra/prisma/prisma.service.js';
 import { INVOICE_SELECT, type InvoiceRecord } from './invoice-record.js';
 import type { ChargeTerms, InvoiceRow } from './invoice-rows.js';
 
+/** Keeps one INSERT well under Postgres' 65,535 bind-parameter limit. */
+const CREATE_CHUNK_SIZE = 2000;
+
 export interface GenerationCharge extends ChargeTerms {
   id: string;
   billingFrom: Date;
@@ -39,10 +42,12 @@ export class InvoiceRepository {
   }
 
   async createMissing(businessId: string, rows: (InvoiceRow & { chargeId: string })[]): Promise<void> {
-    await this.prisma.invoice.createMany({
-      data: rows.map((row) => ({ ...row, businessId })),
-      skipDuplicates: true,
-    });
+    for (let start = 0; start < rows.length; start += CREATE_CHUNK_SIZE) {
+      await this.prisma.invoice.createMany({
+        data: rows.slice(start, start + CREATE_CHUNK_SIZE).map((row) => ({ ...row, businessId })),
+        skipDuplicates: true,
+      });
+    }
   }
 
   findOpen(businessId: string): Promise<InvoiceRecord[]> {
@@ -71,13 +76,15 @@ export class InvoiceRepository {
   }
 
   findOwned(businessId: string, id: string): Promise<InvoiceRecord | null> {
-    return this.prisma.invoice.findFirst({ where: { id, businessId }, select: INVOICE_SELECT });
+    return this.prisma.invoice.findFirst({ where: { id, businessId, customer: { archivedAt: null } }, select: INVOICE_SELECT });
   }
 
   /** Pays the invoice in one transaction; only the first caller wins. */
   markPaidInCash(businessId: string, id: string, now: Date): Promise<InvoiceRecord | 'not_found' | 'already_paid'> {
     return this.prisma.$transaction(async (tx) => {
-      const invoice = await tx.invoice.findFirst({ where: { id, businessId }, select: { amount: true } });
+      const invoice = await tx.invoice.findFirst({
+        where: { id, businessId, customer: { archivedAt: null } },
+        select: { amount: true } });
       if (!invoice) return 'not_found';
       const { count } = await tx.invoice.updateMany({ where: { id, paidAt: null }, data: { paidAt: now } });
       if (count === 0) return 'already_paid';

@@ -25,6 +25,12 @@ describe('business settings (e2e)', () => {
     });
   });
 
+  it('stores an empty area as null', async () => {
+    const { api } = await createOwner(t, { area: 'التجمع الخامس' });
+    const res = await api.patch('/business', { area: '' }).expect(200);
+    expect(res.body.area).toBeNull();
+  });
+
   it('clears the area with null', async () => {
     const { api } = await createOwner(t, { area: 'التجمع الخامس' });
     const res = await api.patch('/business', { area: null }).expect(200);
