@@ -6,8 +6,10 @@ import { ConfigModule } from './config/config.module.js';
 import { PrismaModule } from './infra/prisma/prisma.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { BusinessModule } from './modules/business/index.js';
+import { ChargesModule } from './modules/charges/index.js';
 import { CustomersModule } from './modules/customers/index.js';
 import { HealthModule } from './modules/health/health.module.js';
+import { InvoicesModule } from './modules/invoices/index.js';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { HealthModule } from './modules/health/health.module.js';
     HealthModule,
     BusinessModule,
     CustomersModule,
+    InvoicesModule,
+    ChargesModule,
     AuthModule,
   ],
 })
