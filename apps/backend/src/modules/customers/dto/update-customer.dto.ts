@@ -1,16 +1,17 @@
 import { type CustomerUpdate, type Gender, GENDERS } from '@lamma/shared';
 import { Transform } from 'class-transformer';
 import { IsIn, IsOptional, IsString, Length, MaxLength } from 'class-validator';
+import { IsOptionalNotNull } from '../../../common/validation/optional-not-null.js';
 import { trim } from '../../../common/validation/trim.js';
 
 export class UpdateCustomerDto implements CustomerUpdate {
-  @IsOptional()
+  @IsOptionalNotNull()
   @Transform(trim)
   @IsString()
   @Length(1, 80)
   name?: string;
 
-  @IsOptional()
+  @IsOptionalNotNull()
   @IsString()
   @MaxLength(40)
   phone?: string;

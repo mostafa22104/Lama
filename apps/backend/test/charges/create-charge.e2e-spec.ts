@@ -79,6 +79,7 @@ describe('creating charges (e2e)', () => {
 
     const updated = await api.patch(`/charges/${created.body.id}`, { amount: 500, active: false }).expect(200);
     expect(updated.body).toMatchObject({ amount: 500, active: false });
+    await api.patch(`/charges/${created.body.id}`, { amount: null }).expect(400);
 
     const other = await createBusiness(t.prisma, { phone: '+201112345678' });
     const foreignCharge = await createCharge(t.prisma, other.id, []);

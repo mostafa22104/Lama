@@ -38,6 +38,12 @@ describe('business settings (e2e)', () => {
     await api.patch('/business', { plan: 'pro' }).expect(400);
   });
 
+  it('rejects null for required fields', async () => {
+    const { api } = await createOwner(t);
+    const res = await api.patch('/business', { name: null }).expect(400);
+    expect(res.body.details).toEqual(expect.arrayContaining([expect.objectContaining({ field: 'name' })]));
+  });
+
   it('reports plan usage without archived customers', async () => {
     const { business, api } = await createOwner(t);
     await createCustomer(t.prisma, business.id);

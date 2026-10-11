@@ -21,6 +21,15 @@ describe('updating and archiving customers (e2e)', () => {
     expect(res.body).toMatchObject({ name: 'محمود حسن', phone: '+201112345678', note: null });
   });
 
+  it('rejects null for required fields', async () => {
+    const { business, api } = await createOwner(t);
+    const customer = await createCustomer(t.prisma, business.id);
+    const res = await api.patch(`/customers/${customer.id}`, { name: null }).expect(400);
+    expect(res.body).toMatchObject({ code: 'VALIDATION_FAILED' });
+    expect(res.body.details).toEqual(expect.arrayContaining([expect.objectContaining({ field: 'name' })]));
+    await api.patch(`/customers/${customer.id}`, { phone: null }).expect(400);
+  });
+
   it('archives instead of deleting, then hides the customer', async () => {
     const { business, api } = await createOwner(t);
     const customer = await createCustomer(t.prisma, business.id);
