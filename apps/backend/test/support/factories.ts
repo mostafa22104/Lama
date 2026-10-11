@@ -41,6 +41,7 @@ export function createCharge(
       amount: 450,
       dueDate: new Date('2026-09-20T00:00:00.000Z'),
       createdAt: new Date('2026-09-01T09:00:00.000Z'),
+      billingFrom: new Date('2026-09-01T09:00:00.000Z'),
       ...overrides,
       assignments: { createMany: { data: customerIds.map((customerId) => ({ customerId })) } },
     },

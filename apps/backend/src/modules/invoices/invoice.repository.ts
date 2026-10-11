@@ -5,7 +5,7 @@ import type { ChargeTerms, InvoiceRow } from './invoice-rows.js';
 
 export interface GenerationCharge extends ChargeTerms {
   id: string;
-  createdAt: Date;
+  billingFrom: Date;
   customerIds: string[];
 }
 
@@ -17,7 +17,7 @@ export class InvoiceRepository {
     const charges = await this.prisma.charge.findMany({
       where: { businessId, kind: 'monthly', active: true },
       select: {
-        id: true, kind: true, title: true, amount: true, dayOfMonth: true, dueDate: true, createdAt: true,
+        id: true, kind: true, title: true, amount: true, dayOfMonth: true, dueDate: true, billingFrom: true,
         assignments: { where: { customer: { archivedAt: null } }, select: { customerId: true } },
       },
     });

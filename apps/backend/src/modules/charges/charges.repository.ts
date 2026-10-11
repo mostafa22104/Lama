@@ -5,7 +5,9 @@ import type { Prisma } from '../../generated/prisma/client.js';
 import { PrismaService } from '../../infra/prisma/prisma.service.js';
 import type { ChargeTerms, InvoiceRow } from '../invoices/index.js';
 
-const WITH_COUNT = { _count: { select: { assignments: true } } } as const;
+const WITH_COUNT = {
+  _count: { select: { assignments: { where: { customer: { archivedAt: null } } } } },
+} as const;
 export type ChargeWithCount = Prisma.ChargeGetPayload<{ include: typeof WITH_COUNT }>;
 
 @Injectable()
@@ -37,6 +39,7 @@ export class ChargesRepository {
         dayOfMonth: terms.dayOfMonth,
         dueDate: terms.dueDate ? fromIsoDate(terms.dueDate) : null,
         createdAt,
+        billingFrom: createdAt,
         assignments: { createMany: { data: customerIds.map((customerId) => ({ customerId })) } },
         invoices: { createMany: { data: invoices.map((row) => ({ ...row, businessId })) } },
       },
@@ -56,7 +59,7 @@ export class ChargesRepository {
     return this.prisma.charge.findFirst({ where: { id, businessId }, include: WITH_COUNT });
   }
 
-  update(id: string, data: ChargeUpdate): Promise<ChargeWithCount> {
+  update(id: string, data: ChargeUpdate & { billingFrom?: Date }): Promise<ChargeWithCount> {
     return this.prisma.charge.update({ where: { id }, data, include: WITH_COUNT });
   }
 }

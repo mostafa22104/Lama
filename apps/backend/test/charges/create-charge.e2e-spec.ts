@@ -31,6 +31,16 @@ describe('creating charges (e2e)', () => {
     }
   });
 
+  it('counts only active customers on a charge', async () => {
+    const { business, api } = await createOwner(t);
+    await createCustomer(t.prisma, business.id);
+    const gone = await createCustomer(t.prisma, business.id, { name: 'سيمشي' });
+    await api.post('/charges', { kind: 'monthly', amount: 450, dayOfMonth: 20, assignTo: 'all' }).expect(201);
+    await api.delete(`/customers/${gone.id}`).expect(204);
+    const list = await api.get('/charges').expect(200);
+    expect(list.body[0].customerCount).toBe(1);
+  });
+
   it('bills only selected customers for a one-time charge', async () => {
     const { business, api } = await createOwner(t);
     const omar = await createCustomer(t.prisma, business.id, { name: 'عمر خالد' });

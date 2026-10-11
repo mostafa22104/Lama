@@ -30,7 +30,8 @@ export class ChargesService {
   async update(businessId: string, id: string, patch: ChargeUpdate): Promise<ChargeWithCount> {
     const charge = await this.charges.findOwned(businessId, id);
     if (!charge) throw new AppError('NOT_FOUND', 'Charge not found');
-    return this.charges.update(id, patch);
+    const resumed = patch.active === true && !charge.active;
+    return this.charges.update(id, resumed ? { ...patch, billingFrom: this.clock.now() } : patch);
   }
 
   private async resolveCustomers(businessId: string, input: ChargeInput): Promise<string[]> {

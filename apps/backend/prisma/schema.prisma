@@ -153,6 +153,7 @@ model Charge {
   dueDate     DateTime?          @db.Date
   active      Boolean            @default(true)
   createdAt   DateTime           @default(now())
+  billingFrom DateTime
   assignments ChargeAssignment[]
   invoices    Invoice[]
 

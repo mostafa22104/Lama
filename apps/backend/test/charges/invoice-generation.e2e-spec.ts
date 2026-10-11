@@ -31,6 +31,18 @@ describe('monthly invoice generation (e2e)', () => {
     expect(await periodsOf(charge.body.id)).toEqual(['2026-09', '2026-10', '2026-11', '2026-12']);
   });
 
+  it('does not bill months while a charge was paused', async () => {
+    const { business, api } = await createOwner(t);
+    await createCustomer(t.prisma, business.id);
+    const charge = await api.post('/charges', { kind: 'monthly', amount: 450, dayOfMonth: 20, assignTo: 'all' }).expect(201);
+    await api.patch(`/charges/${charge.body.id}`, { active: false }).expect(200);
+
+    t.clock.set('2027-01-05T09:00:00.000Z');
+    await api.patch(`/charges/${charge.body.id}`, { active: true }).expect(200);
+    await generator.ensureUpToDate(business.id, '2027-01-05');
+    expect(await periodsOf(charge.body.id)).toEqual(['2026-09', '2027-01']);
+  });
+
   it('clamps day 31 to the end of short months', async () => {
     t.clock.set('2027-01-15T09:00:00.000Z');
     const { business, api } = await createOwner(t);
