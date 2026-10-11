@@ -20,9 +20,13 @@ export class InMemoryOtpRepository {
     for (const r of this.records) if (r.target === target && !r.consumedAt) r.consumedAt = now;
   }
 
-  async incrementAttempts(id: string): Promise<void> {
-    const record = this.records.find((r) => r.id === id);
-    if (record) record.attempts += 1;
+  async reserveAttempt(id: string, maxAttempts: number): Promise<boolean> {
+    const record = this.records.find(
+      (r) => r.id === id && !r.consumedAt && r.attempts < maxAttempts,
+    );
+    if (!record) return false;
+    record.attempts += 1;
+    return true;
   }
 
   async consume(id: string, now: Date): Promise<number> {

@@ -30,8 +30,13 @@ export class OtpRepository {
     });
   }
 
-  async incrementAttempts(id: string): Promise<void> {
-    await this.prisma.otpCode.update({ where: { id }, data: { attempts: { increment: 1 } } });
+  /** Atomically takes one attempt; false when the code is consumed or out of attempts. */
+  async reserveAttempt(id: string, maxAttempts: number): Promise<boolean> {
+    const { count } = await this.prisma.otpCode.updateMany({
+      where: { id, consumedAt: null, attempts: { lt: maxAttempts } },
+      data: { attempts: { increment: 1 } },
+    });
+    return count === 1;
   }
 
   /** Returns 1 when this call consumed the code, 0 when it was already consumed. */

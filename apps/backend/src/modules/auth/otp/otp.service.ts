@@ -39,13 +39,12 @@ export class OtpService {
     const latest = await this.otps.findLatest(target);
     if (!latest || latest.consumedAt) throw new AppError('OTP_INVALID', 'No active code');
     if (latest.expiresAt <= now) throw new AppError('OTP_EXPIRED', 'Code expired');
-    if (latest.attempts >= this.env.OTP_MAX_ATTEMPTS) {
+    if (!(await this.otps.reserveAttempt(latest.id, this.env.OTP_MAX_ATTEMPTS))) {
       throw new AppError('OTP_TOO_MANY_ATTEMPTS', 'Too many attempts');
     }
 
     const candidate = hashOtpCode(code, target, this.env.OTP_SECRET);
     if (!safeEqualHex(latest.codeHash, candidate)) {
-      await this.otps.incrementAttempts(latest.id);
       throw new AppError('OTP_INVALID', 'Wrong code');
     }
     return latest.id;

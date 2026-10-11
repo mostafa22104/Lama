@@ -65,6 +65,21 @@ describe('OtpService', () => {
     );
   });
 
+  it('counts concurrent wrong guesses atomically', async () => {
+    await service.request('phone', target, t0);
+    const right = sender.lastCodeFor(target);
+    const wrong = right === '000000' ? '111111' : '000000';
+    const results = await Promise.allSettled(
+      Array.from({ length: 8 }, () => service.check(target, wrong, after(1))),
+    );
+    const codes = results.map((r) => (r.status === 'rejected' ? r.reason.code : 'ok'));
+    expect(codes.filter((c) => c === 'OTP_INVALID')).toHaveLength(5);
+    expect(codes.filter((c) => c === 'OTP_TOO_MANY_ATTEMPTS')).toHaveLength(3);
+    await expect(service.check(target, right, after(2))).rejects.toThrow(
+      code('OTP_TOO_MANY_ATTEMPTS'),
+    );
+  });
+
   it('enforces the resend cooldown and invalidates the previous code', async () => {
     await service.request('phone', target, t0);
     const first = sender.lastCodeFor(target);
