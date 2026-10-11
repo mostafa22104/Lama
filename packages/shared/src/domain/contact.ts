@@ -13,14 +13,22 @@ export function toWesternDigits(value: string): string {
   });
 }
 
+/** Strips Unicode bidi/format marks (pasted from WhatsApp/Arabic UIs) and whitespace. */
+export function stripFormatting(value: string): string {
+  return value.replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069\s]/g, '');
+}
+
 /** Returns the number in E.164 form (+20…) or null when it is not an Egyptian mobile. */
 export function normalizeEgyptianPhone(raw: string): string | null {
-  let digits = toWesternDigits(raw).replace(/[\s\-()]/g, '');
+  let digits = stripFormatting(toWesternDigits(raw)).replace(/[\-().\/]/g, '');
   if (digits.startsWith('+')) digits = digits.slice(1);
 
   if (digits.startsWith('0020')) digits = digits.slice(4);
   else if (digits.startsWith('20')) digits = digits.slice(2);
   else if (digits.startsWith('0')) digits = digits.slice(1);
+
+  // Trunk zero kept after the country code, e.g. +20 010 1234 5678.
+  if (digits.length === 11 && digits.startsWith('01')) digits = digits.slice(1);
 
   return EGYPTIAN_MOBILE.test(digits) ? `+20${digits}` : null;
 }

@@ -3,6 +3,7 @@ import {
   normalizeContact,
   normalizeEgyptianPhone,
   normalizeEmail,
+  stripFormatting,
   toWesternDigits,
 } from './contact.js';
 
@@ -11,6 +12,12 @@ describe('toWesternDigits', () => {
     expect(toWesternDigits('٤٥٠')).toBe('450');
     expect(toWesternDigits('۴۵۰')).toBe('450');
     expect(toWesternDigits('abc 12')).toBe('abc 12');
+  });
+});
+
+describe('stripFormatting', () => {
+  it('removes bidi marks and whitespace only', () => {
+    expect(stripFormatting('\u202A12 3\u202C\u200F 4-5')).toBe('1234-5');
   });
 });
 
@@ -23,6 +30,15 @@ describe('normalizeEgyptianPhone', () => {
     '00201012345678',
     '201012345678',
     '٠١٠١٢٣٤٥٦٧٨',
+    '+20 010 1234 5678',
+    '0020 010 1234 5678',
+    '20 010 1234 5678',
+    '\u202A+20 10 1234 5678\u202C',
+    '\u200E01012345678',
+    '\u2066010 1234 5678\u2069',
+    '\u200F01012345678',
+    '010.1234.5678',
+    '010/1234/5678',
   ])('normalizes %s to E.164', (raw) => {
     expect(normalizeEgyptianPhone(raw)).toBe('+201012345678');
   });
