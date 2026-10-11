@@ -1,6 +1,8 @@
 import type { PrismaService } from '../../src/infra/prisma/prisma.service.js';
+import { assertTestDatabase } from './assert-test-database.js';
 
 export async function resetDatabase(prisma: PrismaService): Promise<void> {
+  assertTestDatabase(process.env['DATABASE_URL']);
   const rows = await prisma.$queryRaw<Array<{ tablename: string }>>`
     SELECT tablename FROM pg_tables
     WHERE schemaname = 'public' AND tablename <> '_prisma_migrations'`;
