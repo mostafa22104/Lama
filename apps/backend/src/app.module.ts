@@ -12,6 +12,7 @@ import { DashboardModule } from './modules/dashboard/index.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { InvoicesModule } from './modules/invoices/index.js';
 import { RemindersModule } from './modules/reminders/index.js';
+import { ReportsModule } from './modules/reports/index.js';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { RemindersModule } from './modules/reminders/index.js';
     InvoicesModule,
     ChargesModule,
     RemindersModule,
+    ReportsModule,
     DashboardModule,
     AuthModule,
   ],
