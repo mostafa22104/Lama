@@ -72,4 +72,16 @@ export class InvoiceRepository {
   findOwned(businessId: string, id: string): Promise<InvoiceRecord | null> {
     return this.prisma.invoice.findFirst({ where: { id, businessId }, select: INVOICE_SELECT });
   }
+
+  /** Pays the invoice in one transaction; only the first caller wins. */
+  markPaidInCash(businessId: string, id: string, now: Date): Promise<InvoiceRecord | 'not_found' | 'already_paid'> {
+    return this.prisma.$transaction(async (tx) => {
+      const invoice = await tx.invoice.findFirst({ where: { id, businessId }, select: { amount: true } });
+      if (!invoice) return 'not_found';
+      const { count } = await tx.invoice.updateMany({ where: { id, paidAt: null }, data: { paidAt: now } });
+      if (count === 0) return 'already_paid';
+      await tx.payment.create({ data: { invoiceId: id, amount: invoice.amount, method: 'cash', recordedAt: now } });
+      return tx.invoice.findUniqueOrThrow({ where: { id }, select: INVOICE_SELECT });
+    });
+  }
 }
