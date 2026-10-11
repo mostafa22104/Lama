@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "yarn build:shared",
     "build:shared": "yarn workspace @lamma/shared build",
     "test": "yarn build:shared && yarn workspaces foreach -A --exclude lamma run test",
     "test:e2e": "yarn build:shared && yarn workspace @lamma/backend test:e2e",
