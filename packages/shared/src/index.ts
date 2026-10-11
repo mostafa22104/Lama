@@ -4,3 +4,7 @@ export * from './types/locale.js';
 export * from './domain/contact.js';
 export * from './domain/money.js';
 export * from './domain/plans.js';
+export * from './types/errors.js';
+export * from './types/business.js';
+export * from './types/auth.js';
+export * from './i18n/index.js';
