@@ -1,0 +1,258 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum BusinessType {
+  academy
+  building
+  tutor
+  nursery
+  other
+}
+
+enum Plan {
+  free
+  basic
+  pro
+}
+
+enum ContactChannel {
+  phone
+  email
+}
+
+enum Gender {
+  male
+  female
+}
+
+enum ChargeKind {
+  monthly
+  one_time
+}
+
+enum PaymentMethod {
+  instapay
+  cash
+}
+
+enum ReminderKind {
+  before
+  on_due
+  after
+  promise
+  manual
+}
+
+enum ReminderChannel {
+  whatsapp_link
+  whatsapp_api
+}
+
+enum ClaimStatus {
+  pending
+  confirmed
+  rejected
+}
+
+enum ClaimVerdict {
+  all_match
+  amount_differs
+  duplicate
+  unreadable
+  needs_review
+}
+
+enum ImportKind {
+  notebook
+  excel
+}
+
+enum ImportStatus {
+  processing
+  ready
+  failed
+}
+
+model Business {
+  id                     String         @id @default(cuid())
+  name                   String
+  type                   BusinessType
+  instapayAddress        String
+  phone                  String?        @unique
+  email                  String?        @unique
+  plan                   Plan           @default(free)
+  logoUrl                String?
+  area                   String?
+  weeklyBackup           Boolean        @default(false)
+  planUpgradeRequestedAt DateTime?
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  customers              Customer[]
+  charges                Charge[]
+  invoices               Invoice[]
+  reminderRule           ReminderRule?
+  refreshTokens          RefreshToken[]
+  importJobs             ImportJob[]
+}
+
+model OtpCode {
+  id         String         @id @default(cuid())
+  channel    ContactChannel
+  target     String
+  codeHash   String
+  expiresAt  DateTime
+  attempts   Int            @default(0)
+  consumedAt DateTime?
+  createdAt  DateTime       @default(now())
+
+  @@index([target, createdAt])
+}
+
+model RefreshToken {
+  id         String    @id @default(cuid())
+  businessId String
+  business   Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([businessId])
+}
+
+model Customer {
+  id          String             @id @default(cuid())
+  businessId  String
+  business    Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name        String
+  phone       String
+  note        String?
+  gender      Gender?
+  archivedAt  DateTime?
+  createdAt   DateTime           @default(now())
+  assignments ChargeAssignment[]
+  invoices    Invoice[]
+
+  @@index([businessId])
+}
+
+model Charge {
+  id          String             @id @default(cuid())
+  businessId  String
+  business    Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  kind        ChargeKind
+  title       String
+  amount      Int
+  dayOfMonth  Int?
+  dueDate     DateTime?          @db.Date
+  active      Boolean            @default(true)
+  createdAt   DateTime           @default(now())
+  assignments ChargeAssignment[]
+  invoices    Invoice[]
+
+  @@index([businessId])
+}
+
+model ChargeAssignment {
+  chargeId   String
+  customerId String
+  charge     Charge   @relation(fields: [chargeId], references: [id], onDelete: Cascade)
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@id([chargeId, customerId])
+}
+
+model Invoice {
+  id           String         @id @default(cuid())
+  businessId   String
+  business     Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  chargeId     String
+  charge       Charge         @relation(fields: [chargeId], references: [id], onDelete: Cascade)
+  customerId   String
+  customer     Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  period       String?
+  title        String
+  amount       Int
+  dueDate      DateTime       @db.Date
+  paidAt       DateTime?
+  publicToken  String         @unique
+  promisedDate DateTime?      @db.Date
+  createdAt    DateTime       @default(now())
+  payments     Payment[]
+  claims       PaymentClaim[]
+  reminderLogs ReminderLog[]
+
+  @@unique([chargeId, customerId, period])
+  @@index([businessId, dueDate])
+}
+
+model Payment {
+  id         String        @id @default(cuid())
+  invoiceId  String
+  invoice    Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount     Int
+  method     PaymentMethod
+  claimId    String?       @unique
+  claim      PaymentClaim? @relation(fields: [claimId], references: [id])
+  recordedAt DateTime      @default(now())
+}
+
+model ReminderRule {
+  businessId String   @id
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  beforeDays Int?     @default(3)
+  onDueDate  Boolean  @default(true)
+  afterDays  Int?     @default(3)
+}
+
+model ReminderLog {
+  id        String          @id @default(cuid())
+  invoiceId String
+  invoice   Invoice         @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  kind      ReminderKind
+  channel   ReminderChannel
+  sentAt    DateTime        @default(now())
+
+  @@index([invoiceId, sentAt])
+}
+
+model PaymentClaim {
+  id                 String       @id @default(cuid())
+  invoiceId          String
+  invoice            Invoice      @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  screenshotKey      String
+  status             ClaimStatus  @default(pending)
+  extractedAmount    Int?
+  extractedDate      DateTime?    @db.Date
+  transactionId      String?
+  recipient          String?
+  rawText            String
+  checkAmount        Boolean
+  checkDate          Boolean
+  checkRecipient     Boolean
+  duplicateOfClaimId String?
+  verdict            ClaimVerdict
+  decidedAt          DateTime?
+  createdAt          DateTime     @default(now())
+  payment            Payment?
+
+  @@index([transactionId])
+  @@index([invoiceId, status])
+}
+
+model ImportJob {
+  id         String       @id @default(cuid())
+  businessId String
+  business   Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  kind       ImportKind
+  status     ImportStatus @default(processing)
+  rows       Json         @default("[]")
+  error      String?
+  createdAt  DateTime     @default(now())
+}
