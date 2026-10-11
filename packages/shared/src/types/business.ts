@@ -15,3 +15,17 @@ export interface BusinessDto {
   area: string | null;
   weeklyBackup: boolean;
 }
+
+export interface BusinessUpdate {
+  name?: string;
+  instapayAddress?: string;
+  area?: string | null;
+  weeklyBackup?: boolean;
+}
+
+export interface BusinessUsageDto {
+  plan: Plan;
+  customerCount: number;
+  maxCustomers: number;
+  upgradeRequestedAt: string | null;
+}

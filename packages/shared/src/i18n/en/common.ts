@@ -18,4 +18,8 @@ export const enCommon: TranslationShape<typeof arCommon> = {
     nursery: 'Nursery',
     other: 'Other',
   },
+  months: [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ],
 };
