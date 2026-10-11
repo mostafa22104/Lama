@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { toIsoDate } from '../../common/dates/date-codec.js';
+import { periodRange } from '@lamma/shared';
+import { fromIsoDate, toIsoDate } from '../../common/dates/date-codec.js';
 import { PrismaService } from '../../infra/prisma/prisma.service.js';
 import { INVOICE_SELECT, type InvoiceRecord } from './invoice-record.js';
 import type { ChargeTerms, InvoiceRow } from './invoice-rows.js';
@@ -82,6 +83,18 @@ export class InvoiceRepository {
       if (count === 0) return 'already_paid';
       await tx.payment.create({ data: { invoiceId: id, amount: invoice.amount, method: 'cash', recordedAt: now } });
       return tx.invoice.findUniqueOrThrow({ where: { id }, select: INVOICE_SELECT });
+    });
+  }
+
+  findForPeriod(businessId: string, period: string): Promise<{ amount: number; paidAt: Date | null }[]> {
+    const { start, end } = periodRange(period);
+    return this.prisma.invoice.findMany({
+      where: {
+        businessId,
+        customer: { archivedAt: null },
+        OR: [{ period }, { period: null, dueDate: { gte: fromIsoDate(start), lte: fromIsoDate(end) } }],
+      },
+      select: { amount: true, paidAt: true },
     });
   }
 }

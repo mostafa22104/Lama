@@ -36,4 +36,18 @@ export class InvoiceQueryService {
     const record = await this.invoices.findOwned(businessId, invoiceId);
     return record ? toOpenInvoice(record, today) : null;
   }
+
+  async periodSummary(
+    businessId: string,
+    period: string,
+  ): Promise<{ expected: number; collected: number; invoiceCount: number; paidCount: number }> {
+    const rows = await this.invoices.findForPeriod(businessId, period);
+    const paid = rows.filter((row) => row.paidAt !== null);
+    return {
+      expected: rows.reduce((sum, row) => sum + row.amount, 0),
+      collected: paid.reduce((sum, row) => sum + row.amount, 0),
+      invoiceCount: rows.length,
+      paidCount: paid.length,
+    };
+  }
 }
