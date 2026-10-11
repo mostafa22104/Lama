@@ -11,13 +11,19 @@
     "build:shared": "yarn workspace @lamma/shared build",
     "test": "yarn build:shared && yarn workspaces foreach -A --exclude lamma run test",
     "test:e2e": "yarn build:shared && yarn workspace @lamma/backend test:e2e",
-    "lint": "yarn build:shared && yarn workspaces foreach -A --exclude lamma run lint",
+    "lint": "yarn build:shared && yarn workspaces foreach -A --exclude lamma run lint && yarn lint:es",
+    "lint:es": "eslint .",
     "format": "prettier --write .",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.13.0",
     "prettier": "^3.9.10",
-    "typescript": "~6.0.2"
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.71.1"
   }
 }

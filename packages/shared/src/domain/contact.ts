@@ -20,7 +20,7 @@ export function stripFormatting(value: string): string {
 
 /** Returns the number in E.164 form (+20…) or null when it is not an Egyptian mobile. */
 export function normalizeEgyptianPhone(raw: string): string | null {
-  let digits = stripFormatting(toWesternDigits(raw)).replace(/[\-().\/]/g, '');
+  let digits = stripFormatting(toWesternDigits(raw)).replace(/[-()./]/g, '');
   if (digits.startsWith('+')) digits = digits.slice(1);
 
   if (digits.startsWith('0020')) digits = digits.slice(4);

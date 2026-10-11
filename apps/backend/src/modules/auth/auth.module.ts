@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ENV } from '../../config/env.js';
-import { BusinessModule } from '../business/business.module.js';
+import { BusinessModule } from '../business/index.js';
 import { AuthController } from './auth.controller.js';
 import { AuthService } from './auth.service.js';
 import { createOtpSender } from './otp/create-otp-sender.js';
