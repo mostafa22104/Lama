@@ -13,6 +13,7 @@ interface OtpInputProps {
   onComplete: (code: string) => void;
   error?: boolean;
   autoFocus?: boolean;
+  editable?: boolean;
 }
 
 /**
@@ -25,7 +26,7 @@ export function normalizeOtp(raw: string): string {
   return run ? run[0] : text.replace(/\D/g, '').slice(0, LENGTH);
 }
 
-export function OtpInput({ value, onChange, onComplete, error, autoFocus = true }: OtpInputProps) {
+export function OtpInput({ value, onChange, onComplete, error, autoFocus = true, editable = true }: OtpInputProps) {
   const styles = useStyles();
   const { t } = useTranslation();
   const input = useRef<ComponentRef<typeof TextInput>>(null);
@@ -50,6 +51,7 @@ export function OtpInput({ value, onChange, onComplete, error, autoFocus = true 
         textContentType="oneTimeCode"
         autoComplete="sms-otp"
         autoFocus={autoFocus}
+        editable={editable}
         maxLength={64}
         style={styles.hidden}
       />

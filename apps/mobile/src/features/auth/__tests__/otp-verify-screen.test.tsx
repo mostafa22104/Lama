@@ -95,4 +95,42 @@ describe('OtpVerifyScreen', () => {
       jest.useRealTimers();
     }
   });
+
+  it('ignores a new code while a verify is still pending', async () => {
+    let release: () => void = () => undefined;
+    const gate = new Promise<void>((resolve) => { release = resolve; });
+    mock.onPost('/auth/otp/verify').reply(async () => { await gate; return [200, authResponse]; });
+    await renderWithProviders(<NavigationContainer><OtpVerifyScreen /></NavigationContainer>);
+    const user = userEvent.setup();
+    await user.paste(screen.getByLabelText(OTP), '111111');
+    await user.paste(screen.getByLabelText(OTP), '222222');
+    expect(mock.history.post).toHaveLength(1);
+    await act(async () => { release(); });
+  });
+
+  it('clears the error as soon as the user edits the code', async () => {
+    mock.onPost('/auth/otp/verify').reply(400, { code: 'OTP_INVALID', message: '' });
+    await renderWithProviders(<NavigationContainer><OtpVerifyScreen /></NavigationContainer>);
+    const user = userEvent.setup();
+    await user.paste(screen.getByLabelText(OTP), '000000');
+    expect(await screen.findByText('الكود مش صح')).toBeTruthy();
+    await user.type(screen.getByLabelText(OTP), '1');
+    expect(screen.queryByText('الكود مش صح')).toBeNull();
+  });
+
+  it('shows a resend failure and keeps the resend link without restarting the countdown', async () => {
+    jest.useFakeTimers();
+    try {
+      mock.onPost('/auth/otp/request').reply(429, { code: 'RATE_LIMITED', message: '' });
+      await renderWithProviders(<NavigationContainer><OtpVerifyScreen /></NavigationContainer>);
+      await act(async () => jest.advanceTimersByTime(60_000));
+      await userEvent.setup({ advanceTimers: jest.advanceTimersByTime }).press(screen.getByRole('button', { name: 'ابعت كود تاني' }));
+      await act(async () => {});
+      expect(mock.history.post).toHaveLength(1);
+      expect(screen.getByText('طلبات كتير، استنى شوية وجرّب تاني')).toBeTruthy();
+      expect(screen.getByRole('button', { name: 'ابعت كود تاني' })).toBeTruthy();
+    } finally {
+      jest.useRealTimers();
+    }
+  });
 });

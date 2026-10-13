@@ -25,10 +25,25 @@ export function OtpVerifyScreen() {
   const countdown = useCountdown(RESEND_SECONDS);
 
   const submit = (value: string) => {
+    if (verify.isPending) return;
     lastCode.current = value;
     verify.mutate({ channel, contact, code: value, signup }, { onError: () => setCode('') });
   };
-  const resendCode = () => resend.mutate({ channel, contact }, { onSettled: () => countdown.restart() });
+  const resendCode = () =>
+    resend.mutate(
+      { channel, contact },
+      {
+        onSuccess: () => countdown.restart(),
+        onError: (error) => {
+          if (error.code === 'OTP_COOLDOWN') countdown.restart();
+        },
+      },
+    );
+  const edit = (value: string) => {
+    if (verify.error) verify.reset();
+    setCode(value);
+  };
+  const resendFailed = resend.error && resend.error.code !== 'OTP_COOLDOWN' ? resend.error : null;
 
   const notRegistered = verify.error?.code === 'SIGNUP_REQUIRED';
   return (
@@ -36,8 +51,8 @@ export function OtpVerifyScreen() {
       <Screen>
         <StepHeader title={t('auth:otpTitle')} onBack={navigation.goBack} />
         {/* The isolate keeps "+20..." from being reordered inside the RTL sentence. */}
-        <Text color="muted">{t('auth:otpSentTo', { contact: `⁦${contact}⁩`, interpolation: { escapeValue: false } })}</Text>
-        <OtpInput value={code} onChange={setCode} onComplete={submit} error={!!verify.error} />
+        <Text color="muted">{t('auth:otpSentTo', { contact: `⁦${contact}⁩` })}</Text>
+        <OtpInput value={code} onChange={edit} onComplete={submit} error={!!verify.error} editable={!verify.isPending} />
         {notRegistered ? (
           <>
             <Text color="danger">{t('auth:notRegistered')}</Text>
@@ -49,6 +64,7 @@ export function OtpVerifyScreen() {
         ) : verify.error ? (
           <Text color="danger">{t(errorMessageKey(verify.error))}</Text>
         ) : null}
+        {resendFailed ? <Text color="danger">{t(errorMessageKey(resendFailed))}</Text> : null}
         {countdown.remaining > 0 ? (
           <Text variant="caption" color="muted">{t('auth:resendIn', { seconds: countdown.remaining })}</Text>
         ) : (

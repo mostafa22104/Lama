@@ -6,9 +6,13 @@ export function useCountdown(seconds: number) {
   const [remaining, setRemaining] = useState(seconds);
 
   useEffect(() => {
-    const tick = () => setRemaining(Math.max(0, Math.ceil((endsAt - Date.now()) / 1000)));
-    tick();
+    const tick = () => {
+      const left = Math.max(0, Math.ceil((endsAt - Date.now()) / 1000));
+      setRemaining(left);
+      if (left === 0) clearInterval(timer);
+    };
     const timer = setInterval(tick, 1000);
+    tick();
     return () => clearInterval(timer);
   }, [endsAt]);
 
