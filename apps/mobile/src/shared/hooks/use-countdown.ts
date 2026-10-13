@@ -1,0 +1,17 @@
+import { useCallback, useEffect, useState } from 'react';
+
+/** Seconds left until zero; starts on mount; restart() goes back to the full time. */
+export function useCountdown(seconds: number) {
+  const [endsAt, setEndsAt] = useState(() => Date.now() + seconds * 1000);
+  const [remaining, setRemaining] = useState(seconds);
+
+  useEffect(() => {
+    const tick = () => setRemaining(Math.max(0, Math.ceil((endsAt - Date.now()) / 1000)));
+    tick();
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, [endsAt]);
+
+  const restart = useCallback(() => setEndsAt(Date.now() + seconds * 1000), [seconds]);
+  return { remaining, restart };
+}

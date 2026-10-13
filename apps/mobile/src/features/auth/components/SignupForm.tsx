@@ -15,7 +15,7 @@ export function SignupForm({ form, lockContact }: { form: UseFormReturn<SignupVa
   };
   return (
     <>
-      <ContactFields control={control as never} errors={formState.errors} channel={watch('channel')} locked={lockContact} />
+      <ContactFields control={control} errors={formState.errors} channel={watch('channel')} locked={lockContact} />
       <Controller
         control={control}
         name="businessName"
