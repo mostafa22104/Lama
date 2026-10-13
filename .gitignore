@@ -17,3 +17,5 @@ apps/mobile/android/local.properties
 apps/mobile/ios/Pods/
 apps/mobile/*.keystore
 !apps/mobile/android/app/debug.keystore
+
+.superpowers/
