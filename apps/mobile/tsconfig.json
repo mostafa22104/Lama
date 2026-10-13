@@ -1,0 +1,6 @@
+{
+  "extends": "@react-native/typescript-config",
+  "compilerOptions": { "types": ["jest"] },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "index.js", "jest.setup.ts"],
+  "exclude": ["**/node_modules", "**/Pods", "android", "ios"]
+}

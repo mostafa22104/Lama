@@ -9,3 +9,11 @@ apps/backend/src/generated/
 apps/backend/uploads/
 .yarn/*
 !.yarn/releases
+
+apps/mobile/android/.gradle/
+apps/mobile/android/app/build/
+apps/mobile/android/build/
+apps/mobile/android/local.properties
+apps/mobile/ios/Pods/
+apps/mobile/*.keystore
+!apps/mobile/android/app/debug.keystore
