@@ -4,6 +4,11 @@ import { refreshOnce } from './refresh';
 
 export interface AuthHooks {
   getAccessToken: () => string | null;
+  /**
+   * Must call the server through `publicApi` (never the authenticated client).
+   * Return null when the server rejects the refresh token; throw (do not return null)
+   * on network errors so the session is kept while offline.
+   */
   refresh: () => Promise<string | null>;
   onAuthFailure: () => void;
 }
@@ -39,12 +44,11 @@ export function createApiClient(baseURL: string): AxiosInstance {
     const original = error.config as RetriableConfig | undefined;
     if (hooks && original && !original._retried && isExpiredToken(error)) {
       original._retried = true;
-      const token = await refreshOnce(hooks.refresh);
+      const token = await refreshOnce(hooks.refresh, hooks.onAuthFailure);
       if (token) {
         original.headers.set('Authorization', `Bearer ${token}`);
         return client(original);
       }
-      hooks.onAuthFailure();
     }
     throw toAppError(error);
   });

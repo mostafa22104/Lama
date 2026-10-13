@@ -1,4 +1,5 @@
 import MockAdapter from 'axios-mock-adapter';
+import { AppError } from '../api/app-error';
 import { configureAuth, createApiClient } from '../api/client';
 
 const tokenInvalid = [401, { code: 'TOKEN_INVALID', message: 'expired' }] as const;
@@ -51,5 +52,33 @@ describe('api client', () => {
     new MockAdapter(client).onPost('/x').reply(400, { code: 'VALIDATION_FAILED', message: '' });
     await expect(client.post('/x')).rejects.toMatchObject({ code: 'VALIDATION_FAILED' });
     expect(refresh).not.toHaveBeenCalled();
+  });
+
+  it('keeps the session when refresh hits a network error', async () => {
+    refresh.mockRejectedValueOnce(new AppError('NETWORK'));
+    const client = createApiClient('http://api');
+    new MockAdapter(client).onGet('/a').reply(...tokenInvalid);
+    await expect(client.get('/a')).rejects.toMatchObject({ code: 'NETWORK' });
+    expect(onAuthFailure).not.toHaveBeenCalled();
+  });
+
+  it('signs out once when parallel requests share a failed refresh', async () => {
+    refresh.mockResolvedValueOnce(null);
+    const client = createApiClient('http://api');
+    new MockAdapter(client).onGet(/\/a|\/b/).reply(...tokenInvalid);
+    const results = await Promise.allSettled([client.get('/a'), client.get('/b')]);
+    expect(results.map((r) => r.status === 'rejected' && (r.reason as AppError).code)).toEqual([
+      'TOKEN_INVALID',
+      'TOKEN_INVALID',
+    ]);
+    expect(onAuthFailure).toHaveBeenCalledTimes(1);
+  });
+
+  it('signs out when the refresh is rejected by the server', async () => {
+    refresh.mockRejectedValueOnce(new AppError('TOKEN_INVALID', 401));
+    const client = createApiClient('http://api');
+    new MockAdapter(client).onGet('/a').reply(...tokenInvalid);
+    await expect(client.get('/a')).rejects.toMatchObject({ code: 'TOKEN_INVALID' });
+    expect(onAuthFailure).toHaveBeenCalledTimes(1);
   });
 });

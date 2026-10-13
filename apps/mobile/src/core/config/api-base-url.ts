@@ -5,6 +5,7 @@ const DEV_API_BASE_URL = 'http://10.0.2.2:3000/api/v1'; // the Android emulator'
 export function resolveApiBaseUrl(input: { isDev: boolean; releaseUrl: string }): string {
   if (input.isDev) return DEV_API_BASE_URL;
   if (!input.releaseUrl) throw new Error('Set "releaseApiBaseUrl" in apps/mobile/app.json for release builds');
+  if (!input.releaseUrl.startsWith('https://')) throw new Error('"releaseApiBaseUrl" must start with https://');
   return input.releaseUrl;
 }
 

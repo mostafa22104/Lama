@@ -10,5 +10,6 @@ describe('resolveApiBaseUrl', () => {
       'https://api.lamma.app/api/v1',
     );
     expect(() => resolveApiBaseUrl({ isDev: false, releaseUrl: '' })).toThrow(/releaseApiBaseUrl/);
+    expect(() => resolveApiBaseUrl({ isDev: false, releaseUrl: 'http://api.lamma.app' })).toThrow(/https/);
   });
 });
