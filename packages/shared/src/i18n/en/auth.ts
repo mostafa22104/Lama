@@ -5,6 +5,7 @@ export const enAuth: TranslationShape<typeof arAuth> = {
   signupTitle: 'New account',
   loginTitle: 'Log in',
   stepOf: 'Step {{step}} of {{total}}',
+  otpLabel: 'Verification code',
   channelPhone: 'Mobile',
   channelEmail: 'Email',
   phoneLabel: 'Mobile number',

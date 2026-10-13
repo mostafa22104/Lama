@@ -9,7 +9,7 @@ describe('StepHeader', () => {
     await renderWithProviders(<StepHeader title="حساب جديد" step={1} total={4} onBack={onBack} />);
     expect(screen.getByRole('header', { name: 'حساب جديد' })).toBeTruthy();
     expect(screen.getByText('خطوة 1 من 4')).toBeTruthy();
-    await userEvent.setup().press(screen.getByRole('button'));
+    await userEvent.setup().press(screen.getByRole('button', { name: 'رجوع' }));
     expect(onBack).toHaveBeenCalled();
   });
 

@@ -3,6 +3,7 @@ export const arAuth = {
   signupTitle: 'حساب جديد',
   loginTitle: 'دخول',
   stepOf: 'خطوة {{step}} من {{total}}',
+  otpLabel: 'كود التأكيد',
   channelPhone: 'موبايل',
   channelEmail: 'إيميل',
   phoneLabel: 'رقم الموبايل',

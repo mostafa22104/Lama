@@ -12,7 +12,7 @@ describe('OtpInput', () => {
   it('accepts Arabic digits, spaces and bidi marks and completes once', async () => {
     const onComplete = jest.fn();
     await renderWithProviders(<Harness onComplete={onComplete} />);
-    const input = screen.getByLabelText('otp');
+    const input = screen.getByLabelText('كود التأكيد');
     await userEvent.setup().paste(input, '‎١٢٣ ٤٥٦');
     expect(onComplete).toHaveBeenCalledTimes(1);
     expect(onComplete).toHaveBeenCalledWith('123456');
@@ -26,7 +26,14 @@ describe('OtpInput', () => {
   it('ignores extra characters beyond six digits', async () => {
     const onComplete = jest.fn();
     await renderWithProviders(<Harness onComplete={onComplete} />);
-    await userEvent.setup().paste(screen.getByLabelText('otp'), 'Your code: 654321. Thanks 99');
+    await userEvent.setup().paste(screen.getByLabelText('كود التأكيد'), 'Your code: 654321. Thanks 99');
     expect(onComplete).toHaveBeenCalledWith('654321');
+  });
+
+  it('prefers a standalone six-digit run inside a message', async () => {
+    const onComplete = jest.fn();
+    await renderWithProviders(<Harness onComplete={onComplete} />);
+    await userEvent.setup().paste(screen.getByLabelText('كود التأكيد'), 'Lamma 2026 code 123456');
+    expect(onComplete).toHaveBeenCalledWith('123456');
   });
 });

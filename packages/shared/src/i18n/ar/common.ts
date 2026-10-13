@@ -3,6 +3,7 @@ export const arCommon = {
   currency: 'ج.م',
   network: 'مفيش إنترنت، جرّب تاني',
   retry: 'جرّب تاني',
+  back: 'رجوع',
   offlineTitle: 'مفيش إنترنت',
   comingSoon: 'الصفحة دي جاية قريب',
   tabs: { home: 'الرئيسية', customers: 'العملاء', confirmations: 'التأكيدات', reports: 'التقارير' },

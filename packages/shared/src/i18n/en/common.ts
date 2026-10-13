@@ -6,6 +6,7 @@ export const enCommon: TranslationShape<typeof arCommon> = {
   currency: 'EGP',
   network: 'No internet connection, try again',
   retry: 'Try again',
+  back: 'Back',
   offlineTitle: 'No internet',
   comingSoon: 'This page is coming soon',
   tabs: { home: 'Home', customers: 'Customers', confirmations: 'Confirmations', reports: 'Reports' },

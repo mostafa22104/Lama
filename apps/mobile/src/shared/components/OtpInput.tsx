@@ -1,6 +1,7 @@
 import React, { type ComponentRef, useRef } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
-import { stripFormatting, toWesternDigits } from '@lamma/shared';
+import { toWesternDigits } from '@lamma/shared';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from '../../theme';
 import { Text } from './Text';
 
@@ -14,13 +15,19 @@ interface OtpInputProps {
   autoFocus?: boolean;
 }
 
-/** Keeps only digits (Arabic-Indic included), max 6; pasting a whole SMS works. */
+/**
+ * Pasting a whole SMS works: the first standalone 6-digit run wins; otherwise
+ * digits only (Arabic-Indic included), max 6.
+ */
 export function normalizeOtp(raw: string): string {
-  return toWesternDigits(stripFormatting(raw)).replace(/\D/g, '').slice(0, LENGTH);
+  const text = toWesternDigits(raw.replace(/[‎‏‪-‮⁦-⁩]/g, ''));
+  const run = text.match(/(?<!\d)\d{6}(?!\d)/);
+  return run ? run[0] : text.replace(/\D/g, '').slice(0, LENGTH);
 }
 
 export function OtpInput({ value, onChange, onComplete, error, autoFocus = true }: OtpInputProps) {
   const styles = useStyles();
+  const { t } = useTranslation();
   const input = useRef<ComponentRef<typeof TextInput>>(null);
   const handleChange = (raw: string) => {
     const next = normalizeOtp(raw);
@@ -36,7 +43,7 @@ export function OtpInput({ value, onChange, onComplete, error, autoFocus = true 
       ))}
       <TextInput
         ref={input}
-        accessibilityLabel="otp"
+        accessibilityLabel={t('auth:otpLabel')}
         value={value}
         onChangeText={handleChange}
         keyboardType="number-pad"

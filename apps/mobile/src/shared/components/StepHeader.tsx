@@ -18,12 +18,12 @@ export function StepHeader({ title, step, total, onBack }: StepHeaderProps) {
   return (
     <View style={styles.wrap}>
       <View style={styles.row}>
-        <Text variant="screenTitle" accessibilityRole="header" style={styles.title}>{title}</Text>
         {onBack ? (
-          <Pressable accessibilityRole="button" accessibilityLabel="back" onPress={onBack} style={styles.back}>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('common:back')} onPress={onBack} style={styles.back}>
             <Icon name="arrowBack" />
           </Pressable>
         ) : null}
+        <Text variant="screenTitle" accessibilityRole="header" style={styles.title}>{title}</Text>
       </View>
       {step && total ? (
         <>
@@ -41,7 +41,7 @@ export function StepHeader({ title, step, total, onBack }: StepHeaderProps) {
 
 const useStyles = makeStyles((t) => ({
   wrap: { gap: 10 },
-  row: { flexDirection: 'row', alignItems: 'center', minHeight: 48 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 48 },
   title: { flex: 1 },
   back: {
     width: 48, height: 48, borderRadius: t.radius.iconTile, borderWidth: 1, borderColor: t.colors.line,
