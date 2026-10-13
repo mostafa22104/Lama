@@ -4,6 +4,11 @@ import type { TranslationShape } from '../translation.js';
 export const enCommon: TranslationShape<typeof arCommon> = {
   appName: 'Lamma',
   currency: 'EGP',
+  network: 'No internet connection, try again',
+  retry: 'Try again',
+  offlineTitle: 'No internet',
+  comingSoon: 'This page is coming soon',
+  tabs: { home: 'Home', customers: 'Customers', confirmations: 'Confirmations', reports: 'Reports' },
   status: {
     paid: 'Paid',
     due_soon: 'Due soon',

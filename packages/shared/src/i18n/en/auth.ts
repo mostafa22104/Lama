@@ -1,0 +1,30 @@
+import type { arAuth } from '../ar/auth.js';
+import type { TranslationShape } from '../translation.js';
+
+export const enAuth: TranslationShape<typeof arAuth> = {
+  signupTitle: 'New account',
+  loginTitle: 'Log in',
+  stepOf: 'Step {{step}} of {{total}}',
+  channelPhone: 'Mobile',
+  channelEmail: 'Email',
+  phoneLabel: 'Mobile number',
+  emailLabel: 'Email',
+  businessNameLabel: 'Business name',
+  businessTypeLabel: 'Business type',
+  instapayLabel: 'InstaPay address',
+  instapayHint: 'Your customers will transfer to this address',
+  continue: 'Continue',
+  haveAccount: 'Have an account? Log in',
+  noAccount: "Don't have an account? Create one",
+  sendCode: 'Send code',
+  otpTitle: 'Enter the code',
+  otpSentTo: 'We sent a 6-digit code to {{contact}}',
+  resend: 'Send a new code',
+  resendIn: 'You can request a new code in {{seconds}} s',
+  notRegistered: 'This number is not registered',
+  createAccount: 'Create account',
+  invalidPhone: 'Enter a valid Egyptian mobile number',
+  invalidEmail: 'Enter a valid email',
+  required: 'This field is required',
+  logout: 'Log out',
+};

@@ -1,6 +1,11 @@
 export const arCommon = {
   appName: 'لَمّة',
   currency: 'ج.م',
+  network: 'مفيش إنترنت، جرّب تاني',
+  retry: 'جرّب تاني',
+  offlineTitle: 'مفيش إنترنت',
+  comingSoon: 'الصفحة دي جاية قريب',
+  tabs: { home: 'الرئيسية', customers: 'العملاء', confirmations: 'التأكيدات', reports: 'التقارير' },
   status: {
     paid: 'مدفوع',
     due_soon: 'مستحق قريب',

@@ -21,6 +21,26 @@ describe('i18n resources', () => {
     }
   });
 
+  it('ships the auth screens copy from the Signup design', () => {
+    expect(resources.ar.auth).toMatchObject({
+      signupTitle: 'حساب جديد',
+      channelPhone: 'موبايل',
+      channelEmail: 'إيميل',
+      phoneLabel: 'رقم الموبايل',
+      businessNameLabel: 'اسم النشاط',
+      businessTypeLabel: 'نوع النشاط',
+      instapayLabel: 'عنوان InstaPay',
+      instapayHint: 'ده العنوان اللي عملاءك هيحوّلوا عليه',
+      continue: 'كمّل',
+    });
+    expect(resources.ar.common.tabs).toEqual({
+      home: 'الرئيسية',
+      customers: 'العملاء',
+      confirmations: 'التأكيدات',
+      reports: 'التقارير',
+    });
+  });
+
   it('uses the design copy for the four payment chips', () => {
     expect(resources.ar.common.status).toMatchObject({
       paid: 'مدفوع',

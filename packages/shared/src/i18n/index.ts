@@ -1,14 +1,16 @@
 import type { Locale } from '../types/locale.js';
+import { arAuth } from './ar/auth.js';
 import { arCommon } from './ar/common.js';
 import { arErrors } from './ar/errors.js';
 import { arReminders } from './ar/reminders.js';
+import { enAuth } from './en/auth.js';
 import { enCommon } from './en/common.js';
 import { enErrors } from './en/errors.js';
 import { enReminders } from './en/reminders.js';
 
 export const resources = {
-  ar: { common: arCommon, errors: arErrors, reminders: arReminders },
-  en: { common: enCommon, errors: enErrors, reminders: enReminders },
+  ar: { common: arCommon, errors: arErrors, reminders: arReminders, auth: arAuth },
+  en: { common: enCommon, errors: enErrors, reminders: enReminders, auth: enAuth },
 } as const;
 
 export type TranslationNamespace = keyof (typeof resources)['ar'];
