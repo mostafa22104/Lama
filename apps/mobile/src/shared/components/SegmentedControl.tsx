@@ -8,7 +8,14 @@ interface Option<T extends string> {
   label: string;
 }
 
-export function SegmentedControl<T extends string>({ options, value, onChange }: { options: Option<T>[]; value: T; onChange: (value: T) => void }) {
+interface SegmentedControlProps<T extends string> {
+  options: Option<T>[];
+  value: T;
+  onChange: (value: T) => void;
+  disabled?: boolean;
+}
+
+export function SegmentedControl<T extends string>({ options, value, onChange, disabled }: SegmentedControlProps<T>) {
   const styles = useStyles();
   return (
     <View style={styles.track} accessibilityRole="tablist">
@@ -19,7 +26,8 @@ export function SegmentedControl<T extends string>({ options, value, onChange }:
             key={option.value}
             accessibilityRole="tab"
             accessibilityLabel={option.label}
-            accessibilityState={{ selected }}
+            accessibilityState={{ selected, disabled: !!disabled }}
+            disabled={disabled}
             onPress={() => onChange(option.value)}
             style={[styles.segment, selected ? styles.selected : null]}
           >

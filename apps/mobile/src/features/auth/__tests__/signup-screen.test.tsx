@@ -51,13 +51,20 @@ describe('SignupScreen', () => {
     await renderWithProviders(<NavigationContainer><SignupScreen /></NavigationContainer>);
     await fill();
     await waitFor(() => expect(mock.history.post).toHaveLength(1));
-    expect(JSON.parse(mock.history.post[0].data)).toEqual({ channel: 'phone', contact: '٠١٠١٢٣٤٥٦٧٨' });
+    expect(JSON.parse(mock.history.post[0].data)).toEqual({ channel: 'phone', contact: '+201012345678' });
     await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
     expect(mockNavigate).toHaveBeenCalledWith('OtpVerify', {
       channel: 'phone',
-      contact: '٠١٠١٢٣٤٥٦٧٨',
+      contact: '+201012345678',
       signup: { businessName: 'أكاديمية النجوم للكرة', businessType: 'academy', instapayAddress: 'nogoum.academy@instapay' },
     });
+  });
+
+  it('still opens the OTP screen when a code was sent recently', async () => {
+    mock.onPost('/auth/otp/request').reply(429, { code: 'OTP_COOLDOWN', message: '' });
+    await renderWithProviders(<NavigationContainer><SignupScreen /></NavigationContainer>);
+    await fill();
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('OtpVerify', expect.objectContaining({ contact: '+201012345678' })));
   });
 
   it('finishes sign-up with the carried code when coming from login', async () => {
@@ -67,12 +74,14 @@ describe('SignupScreen', () => {
     });
     await renderWithProviders(<NavigationContainer><SignupScreen /></NavigationContainer>);
     expect(screen.getByLabelText('رقم الموبايل').props.value).toBe('01012345678');
+    expect(screen.getByLabelText('رقم الموبايل').props.editable).toBe(false);
+    expect(screen.getByRole('tab', { name: 'إيميل' }).props.accessibilityState.disabled).toBe(true);
     const user = userEvent.setup();
     await user.type(screen.getByLabelText('اسم النشاط'), 'أكاديمية النجوم للكرة');
     await user.type(screen.getByLabelText('عنوان InstaPay'), 'nogoum.academy@instapay');
     await user.press(screen.getByRole('button', { name: 'كمّل' }));
     await waitFor(() => expect(mock.history.post).toHaveLength(1));
-    expect(JSON.parse(mock.history.post[0].data)).toMatchObject({ code: '123456', signup: { businessType: 'academy' } });
+    expect(JSON.parse(mock.history.post[0].data)).toMatchObject({ contact: '+201012345678', code: '123456', signup: { businessType: 'academy' } });
     expect(mock.history.post.filter((r) => r.url === '/auth/otp/request')).toHaveLength(0);
     await waitFor(() => expect(useAuthStore.getState().status).toBe('signedIn'));
   });

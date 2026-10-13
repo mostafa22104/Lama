@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { normalizeContact } from '@lamma/shared';
 import type { AppError } from '../../../core/api/app-error';
 import type { AuthStackParamList } from '../../../app/navigation/types';
 import { useRequestOtp, useVerifyOtp } from '../api/use-auth-mutations';
@@ -12,7 +13,9 @@ export function useSignupSubmit(prefill: Prefill) {
   const requestOtp = useRequestOtp();
   const verifyOtp = useVerifyOtp();
 
-  const submit = async ({ channel, contact, businessName, businessType, instapayAddress }: SignupValues) => {
+  const submit = async ({ channel, contact: rawContact, businessName, businessType, instapayAddress }: SignupValues) => {
+    // The schema already proved the contact normalizes; fall back to raw only to satisfy the type.
+    const contact = normalizeContact(channel, rawContact) ?? rawContact;
     const signup = { businessName, businessType, instapayAddress };
     if (prefill) {
       // Coming from login with SIGNUP_REQUIRED: the typed code is still valid, so verify directly.

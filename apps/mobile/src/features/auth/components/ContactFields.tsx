@@ -13,9 +13,11 @@ interface ContactFieldsProps {
   control: Control<ContactValues & Record<string, unknown>>;
   errors: FieldErrors<ContactValues>;
   channel: ContactChannel;
+  /** Read-only contact (carried over from login). */
+  locked?: boolean;
 }
 
-export function ContactFields({ control, errors, channel }: ContactFieldsProps) {
+export function ContactFields({ control, errors, channel, locked }: ContactFieldsProps) {
   const { t } = useTranslation();
   const error = errors.contact?.message ? t(errors.contact.message) : undefined;
   return (
@@ -28,6 +30,7 @@ export function ContactFields({ control, errors, channel }: ContactFieldsProps) 
             options={[{ value: 'phone', label: t('auth:channelPhone') }, { value: 'email', label: t('auth:channelEmail') }]}
             value={field.value as ContactChannel}
             onChange={field.onChange}
+            disabled={locked}
           />
         )}
       />
@@ -36,13 +39,14 @@ export function ContactFields({ control, errors, channel }: ContactFieldsProps) 
         name="contact"
         render={({ field }) =>
           channel === 'phone' ? (
-            <PhoneInput label={t('auth:phoneLabel')} value={field.value as string} onChangeText={field.onChange} error={error} />
+            <PhoneInput label={t('auth:phoneLabel')} value={field.value as string} onChangeText={field.onChange} error={error} editable={!locked} />
           ) : (
             <TextField
               label={t('auth:emailLabel')}
               value={field.value as string}
               onChangeText={field.onChange}
               error={error}
+              editable={!locked}
               keyboardType="email-address"
               autoCapitalize="none"
               ltr

@@ -6,7 +6,7 @@ import { ChipSelect, Text, TextField } from '../../../shared/components';
 import type { SignupValues } from '../schemas/signup-schema';
 import { ContactFields } from './ContactFields';
 
-export function SignupForm({ form }: { form: UseFormReturn<SignupValues> }) {
+export function SignupForm({ form, lockContact }: { form: UseFormReturn<SignupValues>; lockContact?: boolean }) {
   const { t } = useTranslation();
   const { control, formState, watch } = form;
   const error = (key: keyof SignupValues) => {
@@ -15,7 +15,7 @@ export function SignupForm({ form }: { form: UseFormReturn<SignupValues> }) {
   };
   return (
     <>
-      <ContactFields control={control as never} errors={formState.errors} channel={watch('channel')} />
+      <ContactFields control={control as never} errors={formState.errors} channel={watch('channel')} locked={lockContact} />
       <Controller
         control={control}
         name="businessName"

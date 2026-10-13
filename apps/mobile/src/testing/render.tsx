@@ -9,7 +9,7 @@ import { ThemeProvider } from '../theme';
 /** Renders with the real theme, Arabic i18n and a fresh query client. Always `await` it (RNTL 14). */
 export function renderWithProviders(ui: ReactElement) {
   initI18n('ar');
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: Infinity }, mutations: { retry: false, gcTime: Infinity } } });
   return render(
     <SafeAreaProvider>
       <QueryClientProvider client={client}>
