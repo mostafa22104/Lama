@@ -5,7 +5,7 @@ module.exports = {
   setupFiles: ['<rootDir>/jest.setup.ts'],
   transform: {
     // Apply this app's Babel config to @lamma/shared too (it lives outside apps/mobile).
-    '^.+\\.(js|jsx|ts|tsx)$':['babel-jest', { configFile: path.join(__dirname, 'babel.config.js') }],
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { configFile: path.join(__dirname, 'babel.config.js') }],
     '^.+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp|ttf)$': require.resolve(
       '@react-native/jest-preset/jest/assetFileTransformer.js',
     ),
