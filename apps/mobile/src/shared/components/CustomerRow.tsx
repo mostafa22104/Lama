@@ -1,6 +1,8 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
-import type { InvoiceStatus } from '@lamma/shared';
+import { useTranslation } from 'react-i18next';
+import { formatMoney, type InvoiceStatus } from '@lamma/shared';
+import { useLanguageStore } from '../../i18n';
 import { makeStyles } from '../../theme';
 import { AmountText } from './AmountText';
 import { Avatar } from './Avatar';
@@ -17,8 +19,15 @@ interface CustomerRowProps {
 
 export function CustomerRow({ name, subtitle, amount, status, onPress }: CustomerRowProps) {
   const styles = useStyles();
+  const { t } = useTranslation();
+  const language = useLanguageStore((state) => state.language);
+  const money = formatMoney(amount, language);
+  // TalkBack reads the whole row: name, subtitle, amount with currency, then the translated status.
+  const label = [name, subtitle, `${money.amount} ${money.currency}`, status ? t(`common:status.${status}`) : null]
+    .filter(Boolean)
+    .join(' ');
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${name} ${subtitle}`} onPress={onPress} style={styles.row}>
+    <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={styles.row}>
       <Avatar name={name} />
       <View style={styles.texts}>
         <Text variant="section">{name}</Text>

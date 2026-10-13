@@ -21,6 +21,6 @@ export function StatusChip({ status }: { status: InvoiceStatus }) {
 }
 
 const useStyles = makeStyles((t) => ({
-  chip: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: t.radius.chip },
+  chip: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, paddingVertical: 4, borderRadius: t.radius.chip },
   dot: { width: 7, height: 7, borderRadius: 4 },
 }));

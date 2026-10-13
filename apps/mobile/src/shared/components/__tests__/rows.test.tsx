@@ -21,6 +21,13 @@ describe('rows and toggles', () => {
     expect(onPress).toHaveBeenCalled();
   });
 
+  it('CustomerRow announces name, subtitle, amount with currency and status as one label', async () => {
+    await renderWithProviders(
+      <CustomerRow name="محمود حسن" subtitle="اشتراك سبتمبر · متأخر 3 أيام" amount={450} status="overdue" />,
+    );
+    expect(screen.getByLabelText(/محمود حسن .*450 ج\.م متأخر$/)).toBeTruthy();
+  });
+
   it('Toggle is an accessible switch', async () => {
     const onChange = jest.fn();
     await renderWithProviders(<Toggle label="باك أب" value={false} onChange={onChange} />);
