@@ -1,13 +1,36 @@
-import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
-import { formatAmount, resources, toBusinessDate } from '@lamma/shared';
+import React, { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { installAuthHooks, restoreSession } from '../features/auth';
+import { ThemeProvider, useTheme } from '../theme';
+import { toNavigationTheme } from './navigation/navigation-theme';
+import { RootNavigator } from './navigation/RootNavigator';
+import { I18nProvider } from './providers/I18nProvider';
+import { QueryProvider } from './providers/QueryProvider';
+
+function ThemedNavigation() {
+  const theme = useTheme();
+  return (
+    <NavigationContainer theme={toNavigationTheme(theme)}>
+      <RootNavigator />
+    </NavigationContainer>
+  );
+}
 
 export default function App() {
+  useEffect(() => {
+    installAuthHooks();
+    void restoreSession();
+  }, []);
   return (
-    <SafeAreaView>
-      <Text>{resources.ar.common.appName}</Text>
-      <Text>{formatAmount(23400)}</Text>
-      <Text>{toBusinessDate(new Date('2026-09-20T22:30:00Z'))}</Text>
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <QueryProvider>
+        <ThemeProvider>
+          <I18nProvider>
+            <ThemedNavigation />
+          </I18nProvider>
+        </ThemeProvider>
+      </QueryProvider>
+    </SafeAreaProvider>
   );
 }
