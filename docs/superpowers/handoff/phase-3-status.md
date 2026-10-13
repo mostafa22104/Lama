@@ -3,6 +3,20 @@
 Read this first when continuing the project on another machine. The controller's working notes
 (`.superpowers/`, git-ignored) do not travel with the repo; everything needed is summarized here.
 
+## Start here on a new machine
+
+1. Install Node 24, Git, JDK 17, Android Studio (SDK 35/36, emulator `Pixel_7`), the superpowers plugin for Claude Code.
+2. `git clone https://github.com/mostafa22104/Lama.git C:\dev\Lama`, `cd C:\dev\Lama`,
+   `git checkout feat/phase-3-mobile-foundation`, open Claude Code there and paste:
+
+```
+You are continuing the Lamma (لَمّة) project on a new Windows machine. Repo C:\dev\Lama, branch feat/phase-3-mobile-foundation.
+Read docs/superpowers/handoff/phase-3-status.md first, then the specs in docs/superpowers/specs/ and the Global Constraints + "### Task 11" of docs/superpowers/plans/2026-10-11-phase-3-mobile-foundation.md.
+Work with the superpowers skills (subagent-driven development; brainstorming → spec → plan for new phases), keep the architecture rules in the handoff, work locally, push only when I ask, never kill processes by image name, and don't stop between tasks to ask.
+Step 0: corepack enable; yarn install; recreate apps/backend/.env and .env.test from .env.example (npx prisma dev for databases lamma + lamma-test, random dev secrets), run migrations, verify yarn lint / yarn test / yarn test:e2e.
+Then do "Remaining steps for Phase 3" in this file in order, show me the acceptance screenshots, merge into main, and start Phase 4 with brainstorming.
+```
+
 ## Project in one paragraph
 
 Lamma (لَمّة) — Arabic-first Egyptian subscription / debt-collection app, built from the Claude
