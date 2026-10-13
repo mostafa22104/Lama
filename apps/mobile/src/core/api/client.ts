@@ -6,8 +6,9 @@ export interface AuthHooks {
   getAccessToken: () => string | null;
   /**
    * Must call the server through `publicApi` (never the authenticated client).
-   * Return null when the server rejects the refresh token; throw (do not return null)
-   * on network errors so the session is kept while offline.
+   * Return null (or throw AppError 'TOKEN_INVALID') only when the server rejects the
+   * refresh token: that signs the user out. Throw any other error (network, 5xx, 429)
+   * as-is so the session is kept.
    */
   refresh: () => Promise<string | null>;
   onAuthFailure: () => void;

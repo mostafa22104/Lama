@@ -81,4 +81,12 @@ describe('api client', () => {
     await expect(client.get('/a')).rejects.toMatchObject({ code: 'TOKEN_INVALID' });
     expect(onAuthFailure).toHaveBeenCalledTimes(1);
   });
+
+  it('keeps the session when the server fails during refresh', async () => {
+    refresh.mockRejectedValueOnce(new AppError('INTERNAL_ERROR', 500));
+    const client = createApiClient('http://api');
+    new MockAdapter(client).onGet('/a').reply(...tokenInvalid);
+    await expect(client.get('/a')).rejects.toMatchObject({ code: 'INTERNAL_ERROR' });
+    expect(onAuthFailure).not.toHaveBeenCalled();
+  });
 });

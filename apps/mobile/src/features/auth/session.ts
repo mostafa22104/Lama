@@ -6,8 +6,8 @@ import { authApi } from './api/auth-api';
 import { useAuthStore } from './auth-store';
 
 async function forget(): Promise<void> {
-  await clearRefreshToken();
   useAuthStore.setState({ status: 'signedOut', accessToken: null, business: null });
+  await clearRefreshToken().catch(() => undefined);
 }
 
 /** Exchanges the saved refresh token for a new pair. Returns the new access token, or null. */
@@ -33,14 +33,15 @@ export function installAuthHooks(): void {
 export async function restoreSession(): Promise<void> {
   useAuthStore.setState({ status: 'restoring' });
   try {
+    // Calls rotate directly: it runs before any authenticated request exists.
     const accessToken = await rotate();
     if (!accessToken) return void useAuthStore.setState({ status: 'signedOut' });
     const business = await authApi.me();
     useAuthStore.setState({ status: 'signedIn', business });
   } catch (error) {
-    // No internet: keep the saved session and let the owner retry.
-    if (error instanceof AppError && error.code === 'NETWORK') return void useAuthStore.setState({ status: 'offline' });
-    await forget();
+    // Only a real token rejection ends the session; anything else (offline, 5xx, 429) keeps it.
+    if (error instanceof AppError && error.code === 'TOKEN_INVALID') return forget();
+    useAuthStore.setState({ status: 'offline' });
   }
 }
 
