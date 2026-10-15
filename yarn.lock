@@ -227,6 +227,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-plugin-utils@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "@babel/helper-plugin-utils@npm:8.0.1"
+  peerDependencies:
+    "@babel/core": ^8.0.0
+  checksum: 10c0/ec56d98187a58dfbc2ce9d75fd5f880d6acacefb314e32fe40c57293c6c65c659fa116c665e430aff8b153b7d0ea63f16ca290e9d2283196e3c7a3dd61bffa94
+  languageName: node
+  linkType: hard
+
 "@babel/helper-remap-async-to-generator@npm:^7.29.7":
   version: 7.29.7
   resolution: "@babel/helper-remap-async-to-generator@npm:7.29.7"
@@ -850,6 +859,17 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 10c0/6cd951e366c5c30223c409157e312d949feecfae8b4b4927053764ec71ff2bacf43aceda9b53239cd90d71caf4ae849c70549e0d3e31377dd8f42a0c283bdda2
+  languageName: node
+  linkType: hard
+
+"@babel/plugin-transform-export-namespace-from@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "@babel/plugin-transform-export-namespace-from@npm:8.0.1"
+  dependencies:
+    "@babel/helper-plugin-utils": "npm:^8.0.1"
+  peerDependencies:
+    "@babel/core": ^8.0.0
+  checksum: 10c0/c497acc33cfa66887bc47ed034d373f33ef2d5f7fb57259de3b239f7c1b3e3203a6ad99ceb3b96a4a52d422dc45bd02472dbf6b61d990916810f5e328667c69d
   languageName: node
   linkType: hard
 
@@ -2430,6 +2450,7 @@ __metadata:
   resolution: "@lamma/mobile@workspace:apps/mobile"
   dependencies:
     "@babel/core": "npm:^7.25.2"
+    "@babel/plugin-transform-export-namespace-from": "npm:^8.0.1"
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
     "@hookform/resolvers": "npm:^5.9.1"
@@ -2447,6 +2468,7 @@ __metadata:
     "@tanstack/react-query": "npm:^5.104.2"
     "@testing-library/react-native": "npm:^14.1.0"
     "@types/jest": "npm:^29.5.13"
+    "@types/node": "npm:^26.6.5"
     "@types/react": "npm:^19.2.0"
     axios: "npm:^1.20.0"
     axios-mock-adapter: "npm:^2.1.0"
@@ -4083,7 +4105,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^26.6.5":
   version: 26.6.5
   resolution: "@types/node@npm:26.6.5"
   dependencies:

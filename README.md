@@ -70,6 +70,29 @@ All owner routes need `Authorization: Bearer <accessToken>`. Errors are `{ code,
 
 Monthly invoices are created when a charge is created and back-filled on every read (`InvoiceGenerator.ensureUpToDate`); there is no background job yet.
 
+## Mobile app (owner, React Native)
+
+`apps/mobile` — React Native 0.87 CLI, Android package `com.lamma.owner`. Needs JDK 17 and the Android SDK (API 35/36) with an emulator (e.g. `Pixel_7`).
+
+```bash
+yarn workspace @lamma/backend start:dev          # API on :3000 (the emulator reaches it as 10.0.2.2)
+"$LOCALAPPDATA/Android/Sdk/emulator/emulator.exe" -avd Pixel_7
+yarn workspace @lamma/mobile start               # Metro
+yarn workspace @lamma/mobile android             # build + install the debug app
+yarn workspace @lamma/mobile test                # Jest + React Native Testing Library
+```
+
+- OTP codes appear in the backend log in development.
+- Debug builds open a component gallery from the Home tab (theme + language switches, logout).
+- Release builds read the API URL from `apps/mobile/app.json` → `releaseApiBaseUrl` and refuse to start without it.
+- iOS: the code is cross-platform, but building needs macOS (not covered yet).
+- **Windows build fallback**: If `yarn workspace @lamma/mobile android` fails on Windows, start Metro with `yarn workspace @lamma/mobile start`, then in a separate terminal:
+  ```bash
+  cd apps/mobile/android && set GRADLE_OPTS="-Djavax.net.ssl.trustStoreType=WINDOWS-ROOT" && gradlew.bat app:installDebug
+  adb reverse tcp:8081 tcp:8081
+  adb shell am start -n com.lamma.owner/.MainActivity
+  ```
+
 ## Conventions
 
 - Feature folders: `apps/backend/src/modules/<feature>/` with controller → service → repository.

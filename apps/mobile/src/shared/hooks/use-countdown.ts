@@ -16,6 +16,9 @@ export function useCountdown(seconds: number) {
     return () => clearInterval(timer);
   }, [endsAt]);
 
-  const restart = useCallback(() => setEndsAt(Date.now() + seconds * 1000), [seconds]);
+  const restart = useCallback(() => {
+    setEndsAt(Date.now() + seconds * 1000);
+    setRemaining(seconds);
+  }, [seconds]);
   return { remaining, restart };
 }

@@ -1,9 +1,19 @@
 import React from 'react';
-import { act, screen } from '@testing-library/react-native';
+import { act, screen, userEvent } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useAuthStore } from '../../features/auth';
 import { renderWithProviders } from '../../testing/render';
 import { RootNavigator } from '../navigation/RootNavigator';
+
+const mockRestoreSession = jest.fn().mockImplementation(async () => undefined);
+
+jest.mock('../../features/auth', () => {
+  const actual = jest.requireActual('../../features/auth');
+  return {
+    ...actual,
+    restoreSession: () => mockRestoreSession(),
+  };
+});
 
 async function renderRoot() {
   await renderWithProviders(
@@ -40,5 +50,14 @@ describe('RootNavigator', () => {
     await renderRoot();
     expect(screen.getByText('مفيش إنترنت')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'جرّب تاني' })).toBeTruthy();
+  });
+
+  it('calls restoreSession once when pressing retry on the offline screen', async () => {
+    mockRestoreSession.mockClear();
+    useAuthStore.setState({ status: 'offline', accessToken: null, business: null });
+    await renderRoot();
+    const user = userEvent.setup();
+    await user.press(screen.getByRole('button', { name: 'جرّب تاني' }));
+    expect(mockRestoreSession).toHaveBeenCalledTimes(1);
   });
 });

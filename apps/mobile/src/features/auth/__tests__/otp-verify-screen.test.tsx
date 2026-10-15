@@ -15,6 +15,12 @@ jest.mock('@react-navigation/native', () => ({
   useRoute: () => ({ params: mockParams }),
 }));
 
+const mockRestart = jest.fn();
+let mockRemaining = 0;
+jest.mock('../../../shared/hooks/use-countdown', () => ({
+  useCountdown: () => ({ remaining: mockRemaining, restart: mockRestart }),
+}));
+
 const CONTACT = '+201012345678';
 const authResponse = {
   business: { id: 'b1' },
@@ -28,6 +34,8 @@ describe('OtpVerifyScreen', () => {
   beforeEach(() => {
     mock = new MockAdapter(publicApi);
     mockNavigate.mockClear();
+    mockRestart.mockClear();
+    mockRemaining = 0;
     mockParams = { channel: 'phone', contact: CONTACT };
     useAuthStore.setState({ status: 'signedOut', accessToken: null, business: null });
   });
@@ -80,22 +88,6 @@ describe('OtpVerifyScreen', () => {
     expect(JSON.parse(mock.history.post[0].data).signup).toEqual(signup);
   });
 
-  it('hides resend until the countdown ends and restarts it on OTP_COOLDOWN', async () => {
-    jest.useFakeTimers();
-    try {
-      mock.onPost('/auth/otp/request').reply(429, { code: 'OTP_COOLDOWN', message: '' });
-      await renderWithProviders(<NavigationContainer><OtpVerifyScreen /></NavigationContainer>);
-      expect(screen.queryByRole('button', { name: 'ابعت كود تاني' })).toBeNull();
-      await act(async () => jest.advanceTimersByTime(60_000));
-      await userEvent.setup({ advanceTimers: jest.advanceTimersByTime }).press(screen.getByRole('button', { name: 'ابعت كود تاني' }));
-      await act(async () => {});
-      expect(mock.history.post).toHaveLength(1);
-      expect(screen.queryByRole('button', { name: 'ابعت كود تاني' })).toBeNull();
-    } finally {
-      jest.useRealTimers();
-    }
-  });
-
   it('ignores a new code while a verify is still pending', async () => {
     let release: () => void = () => undefined;
     const gate = new Promise<void>((resolve) => { release = resolve; });
@@ -118,19 +110,33 @@ describe('OtpVerifyScreen', () => {
     expect(screen.queryByText('الكود مش صح')).toBeNull();
   });
 
+  it('hides resend until the countdown ends', async () => {
+    mockRemaining = 60;
+    await renderWithProviders(<NavigationContainer><OtpVerifyScreen /></NavigationContainer>);
+    expect(screen.queryByRole('button', { name: 'ابعت كود تاني' })).toBeNull();
+    expect(screen.getByText('تقدر تطلب كود تاني بعد 60 ثانية')).toBeTruthy();
+  });
+
+  it('restarts the countdown on OTP_COOLDOWN', async () => {
+    mockRemaining = 0;
+    mock.onPost('/auth/otp/request').reply(429, { code: 'OTP_COOLDOWN', message: '' });
+    await renderWithProviders(<NavigationContainer><OtpVerifyScreen /></NavigationContainer>);
+    const user = userEvent.setup();
+    await user.press(screen.getByRole('button', { name: 'ابعت كود تاني' }));
+    await act(async () => {});
+    expect(mockRestart).toHaveBeenCalledTimes(1);
+    expect(mock.history.post).toHaveLength(1);
+  });
+
   it('shows a resend failure and keeps the resend link without restarting the countdown', async () => {
-    jest.useFakeTimers();
-    try {
-      mock.onPost('/auth/otp/request').reply(429, { code: 'RATE_LIMITED', message: '' });
-      await renderWithProviders(<NavigationContainer><OtpVerifyScreen /></NavigationContainer>);
-      await act(async () => jest.advanceTimersByTime(60_000));
-      await userEvent.setup({ advanceTimers: jest.advanceTimersByTime }).press(screen.getByRole('button', { name: 'ابعت كود تاني' }));
-      await act(async () => {});
-      expect(mock.history.post).toHaveLength(1);
-      expect(screen.getByText('طلبات كتير، استنى شوية وجرّب تاني')).toBeTruthy();
-      expect(screen.getByRole('button', { name: 'ابعت كود تاني' })).toBeTruthy();
-    } finally {
-      jest.useRealTimers();
-    }
+    mockRemaining = 0;
+    mock.onPost('/auth/otp/request').reply(429, { code: 'RATE_LIMITED', message: '' });
+    await renderWithProviders(<NavigationContainer><OtpVerifyScreen /></NavigationContainer>);
+    const user = userEvent.setup();
+    await user.press(screen.getByRole('button', { name: 'ابعت كود تاني' }));
+    expect(await screen.findByText('طلبات كتير، استنى شوية وجرّب تاني')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'ابعت كود تاني' })).toBeTruthy();
+    expect(mockRestart).not.toHaveBeenCalled();
+    expect(mock.history.post).toHaveLength(1);
   });
 });
