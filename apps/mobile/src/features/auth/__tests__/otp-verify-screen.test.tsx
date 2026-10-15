@@ -134,6 +134,7 @@ describe('OtpVerifyScreen', () => {
     await renderWithProviders(<NavigationContainer><OtpVerifyScreen /></NavigationContainer>);
     const user = userEvent.setup();
     await user.press(screen.getByRole('button', { name: 'ابعت كود تاني' }));
+    await act(async () => {});
     expect(await screen.findByText('طلبات كتير، استنى شوية وجرّب تاني')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'ابعت كود تاني' })).toBeTruthy();
     expect(mockRestart).not.toHaveBeenCalled();
