@@ -31,6 +31,7 @@ export function ensureDirection(language: Locale, deps: DirectionDeps = nativeDe
 }
 
 export function changeLanguage(language: Locale, deps: DirectionDeps = nativeDeps()): void {
+  if (useLanguageStore.getState().language === language) return;
   useLanguageStore.getState().setLanguage(language);
   apply(language, deps);
 }

@@ -29,7 +29,7 @@ export function TabBarItem({ label, icon, focused, badge = 0, onPress }: TabBarI
 }
 
 const useStyles = makeStyles((t) => ({
-  item: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 4 },
+  item: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 2 },
   pill: { width: 64, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   pillActive: { backgroundColor: t.colors.primarySoft },
   badge: { position: 'absolute', top: -6, end: 6 },

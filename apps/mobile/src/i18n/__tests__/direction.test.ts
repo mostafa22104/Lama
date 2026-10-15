@@ -32,6 +32,13 @@ describe('direction', () => {
     expect(deps.calls).toEqual(['allow:true', 'force:false', 'restart']);
   });
 
+  it('does not restart if changing to the current language', () => {
+    useLanguageStore.setState({ language: 'ar' });
+    const deps = fakeDeps(true);
+    changeLanguage('ar', deps);
+    expect(deps.calls).toEqual([]);
+  });
+
   it('defaults to Arabic', () => {
     useLanguageStore.setState({ language: 'ar' });
     expect(useLanguageStore.persist.getOptions().name).toBe('language');

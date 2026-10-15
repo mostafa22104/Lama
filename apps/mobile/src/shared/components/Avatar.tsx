@@ -17,7 +17,7 @@ export function Avatar({ name, size }: { name: string; size?: number }) {
   const side = size ?? sizes.avatar + 8;
   return (
     <View style={{ width: side, height: side, borderRadius: side / 2, backgroundColor: tint.bg, alignItems: 'center', justifyContent: 'center' }}>
-      <Text variant="section" style={{ color: tint.fg }}>{name.trim().charAt(0)}</Text>
+      <Text variant="section" style={{ color: tint.fg }}>{Array.from(name.trim())[0] ?? ''}</Text>
     </View>
   );
 }

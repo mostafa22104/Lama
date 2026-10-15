@@ -30,7 +30,7 @@ export function CustomerRow({ name, subtitle, amount, status, onPress }: Custome
     <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={styles.row}>
       <Avatar name={name} />
       <View style={styles.texts}>
-        <Text variant="section">{name}</Text>
+        <Text variant="section" numberOfLines={1}>{name}</Text>
         <Text variant="caption" color="muted" numberOfLines={1}>{subtitle}</Text>
       </View>
       <View style={styles.end}>
