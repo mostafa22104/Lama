@@ -2,9 +2,17 @@ import React, { type ReactNode } from 'react';
 import { type StyleProp, View, type ViewStyle } from 'react-native';
 import { makeStyles } from '../../theme';
 
-export function Card({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
+export function Card({
+  children,
+  style,
+  testID,
+}: {
+  children: ReactNode;
+  style?: StyleProp<ViewStyle>;
+  testID?: string;
+}) {
   const styles = useStyles();
-  return <View style={[styles.card, style]}>{children}</View>;
+  return <View testID={testID} style={[styles.card, style]}>{children}</View>;
 }
 
 const useStyles = makeStyles((t) => ({

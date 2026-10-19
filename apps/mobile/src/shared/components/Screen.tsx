@@ -6,14 +6,19 @@ import { makeStyles } from '../../theme';
 interface ScreenProps {
   children: ReactNode;
   scroll?: boolean;
+  refreshControl?: React.ReactElement;
   /** Pinned to the bottom (e.g. the primary button), above the keyboard. */
   footer?: ReactNode;
 }
 
-export function Screen({ children, scroll = true, footer }: ScreenProps) {
+export function Screen({ children, scroll = true, refreshControl, footer }: ScreenProps) {
   const styles = useStyles();
   const body = scroll ? (
-    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      contentContainerStyle={styles.content}
+      keyboardShouldPersistTaps="handled"
+      refreshControl={refreshControl}
+    >
       {children}
     </ScrollView>
   ) : (

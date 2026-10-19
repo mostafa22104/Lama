@@ -17,3 +17,4 @@ export * from './types/customers.js';
 export * from './types/charges.js';
 export * from './types/reminders.js';
 export * from './types/dashboard.js';
+export * from './types/claims.js';

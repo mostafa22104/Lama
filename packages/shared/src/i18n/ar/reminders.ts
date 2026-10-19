@@ -16,4 +16,13 @@ export const arReminders = {
     neutral: 'لو الدفع تم خلاص، ابعت صورة التحويل من اللينك ده:',
   },
   days: { one: 'يوم', two: 'يومين', few: '{n} أيام', many: '{n} يوم' },
+  screenTitle: 'تذكيرات النهارده',
+  sentProgress: 'اتبعت {{sent}} من {{total}}',
+  allDone: 'خلصنا النهارده',
+  remaining: 'فاضل {{count}}',
+  sendAll: 'ابعت الكل',
+  sendOnWhatsApp: 'ابعت على واتساب',
+  sent: 'اتبعت',
+  howCustomerSeesIt: 'شوف الرسالة بتوصل للعميل إزاي',
+  emptyReminders: 'مفيش تذكيرات مطلوبة النهارده 🎉',
 } as const;

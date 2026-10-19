@@ -11,6 +11,7 @@ import { CustomersModule } from './modules/customers/index.js';
 import { DashboardModule } from './modules/dashboard/index.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { InvoicesModule } from './modules/invoices/index.js';
+import { PaymentsModule } from './modules/payments/index.js';
 import { RemindersModule } from './modules/reminders/index.js';
 import { ReportsModule } from './modules/reports/index.js';
 
@@ -25,6 +26,7 @@ import { ReportsModule } from './modules/reports/index.js';
     BusinessModule,
     CustomersModule,
     InvoicesModule,
+    PaymentsModule,
     ChargesModule,
     RemindersModule,
     ReportsModule,

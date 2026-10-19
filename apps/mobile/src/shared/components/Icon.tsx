@@ -12,14 +12,22 @@ import CircleAlert from 'lucide-react-native/icons/circle-alert';
 import CircleCheck from 'lucide-react-native/icons/circle-check';
 import House from 'lucide-react-native/icons/house';
 import Languages from 'lucide-react-native/icons/languages';
+import Download from 'lucide-react-native/icons/download';
+import Lock from 'lucide-react-native/icons/lock';
+import Camera from 'lucide-react-native/icons/camera';
+import Contact from 'lucide-react-native/icons/contact';
+import FileSpreadsheet from 'lucide-react-native/icons/file-spreadsheet';
 import LogOut from 'lucide-react-native/icons/log-out';
 import Mail from 'lucide-react-native/icons/mail';
 import MessageCircle from 'lucide-react-native/icons/message-circle';
 import Moon from 'lucide-react-native/icons/moon';
+import Pencil from 'lucide-react-native/icons/pencil';
 import Plus from 'lucide-react-native/icons/plus';
 import Search from 'lucide-react-native/icons/search';
+import Settings from 'lucide-react-native/icons/settings';
 import Smartphone from 'lucide-react-native/icons/smartphone';
 import Sun from 'lucide-react-native/icons/sun';
+import TrendingUp from 'lucide-react-native/icons/trending-up';
 import Users from 'lucide-react-native/icons/users';
 import X from 'lucide-react-native/icons/x';
 import { useTheme } from '../../theme';
@@ -29,6 +37,8 @@ const ICONS = {
   confirmations: CircleCheck, reports: ChartNoAxesColumn, check: Check, close: X, plus: Plus,
   search: Search, bell: Bell, whatsapp: MessageCircle, calendar: Calendar, sun: Sun, moon: Moon,
   language: Languages, logout: LogOut, mail: Mail, phone: Smartphone, cash: Banknote, alert: CircleAlert,
+  settings: Settings, trendingUp: TrendingUp, download: Download, pencil: Pencil, lock: Lock,
+  camera: Camera, contacts: Contact, excel: FileSpreadsheet,
 } as const;
 
 export type IconName = keyof typeof ICONS;

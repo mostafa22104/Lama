@@ -1,0 +1,18 @@
+export const arReports = {
+  title: 'تقرير الشهر',
+  prevMonthA11y: 'الشهر اللي فات',
+  nextMonthA11y: 'الشهر الجاي',
+  heroWeCollected: 'لمّينا لك',
+  thisMonth: 'الشهر ده',
+  heroProgressSubtitle: '{{percent}}% من {{expected}} متوقعة',
+  vsLastMonth: 'مقارنة بالشهر اللي فات',
+  diffPositive: '{{amount}}+',
+  diffNegative: '{{amount}}-',
+  paidCardTitle: 'دفعوا',
+  paidCardValue: '{{paid}} من {{total}}',
+  stillLateTitle: 'لسه متأخرين',
+  stillLateCount: '{{count}} عملاء',
+  remindThemWhatsApp: 'فكّرهم على واتساب',
+  downloadExcel: 'نزّل التقرير Excel',
+  exportSuccess: 'تم تصدير التقرير',
+} as const;

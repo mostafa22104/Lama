@@ -8,4 +8,15 @@ export type AuthStackParamList = {
 
 export type MainTabParamList = { Home: undefined; Customers: undefined; Confirmations: undefined; Reports: undefined };
 
-export type MainStackParamList = { Tabs: undefined; ComponentGallery: undefined };
+export type MainStackParamList = {
+  Tabs: undefined;
+  CustomerProfile: { customerId: string };
+  Reminders: undefined;
+  Settings: undefined;
+  AddCustomers: undefined;
+  NotebookReview: undefined;
+  AddCharge: undefined;
+  ReminderSettings: undefined;
+  ComponentGallery: undefined;
+};
+

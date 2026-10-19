@@ -14,4 +14,13 @@ export const enReminders: TranslationShape<typeof arReminders> = {
     neutral: 'Already paid? Send the transfer screenshot here:',
   },
   days: { one: '1 day', two: '2 days', few: '{n} days', many: '{n} days' },
+  screenTitle: "Today's Reminders",
+  sentProgress: 'Sent {{sent}} of {{total}}',
+  allDone: 'Done for today',
+  remaining: '{{count}} remaining',
+  sendAll: 'Send all',
+  sendOnWhatsApp: 'Send on WhatsApp',
+  sent: 'Sent',
+  howCustomerSeesIt: 'See how the customer receives it',
+  emptyReminders: 'No reminders needed today 🎉',
 };
