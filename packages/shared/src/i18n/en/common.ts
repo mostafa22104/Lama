@@ -9,7 +9,7 @@ export const enCommon: TranslationShape<typeof arCommon> = {
   back: 'Back',
   offlineTitle: 'No internet',
   comingSoon: 'This page is coming soon',
-  tabs: { home: 'Home', customers: 'Customers', confirmations: 'Confirmations', reports: 'Reports' },
+  tabs: { home: 'Home', subscriptions: 'Subscriptions', customers: 'Customers', confirmations: 'Confirmations', reports: 'Reports' },
   status: {
     paid: 'Paid',
     due_soon: 'Due soon',

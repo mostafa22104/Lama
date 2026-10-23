@@ -44,12 +44,11 @@ export class InvoiceQueryService {
   ): Promise<{ expected: number; collected: number; invoiceCount: number; paidCount: number }> {
     await this.generator.ensureUpToDate(businessId, today);
     const rows = await this.invoices.findForPeriod(businessId, period);
-    const paid = rows.filter((row) => row.paidAt !== null);
     return {
       expected: rows.reduce((sum, row) => sum + row.amount, 0),
-      collected: paid.reduce((sum, row) => sum + row.amount, 0),
+      collected: rows.reduce((sum, row) => sum + row.paidAmount, 0),
       invoiceCount: rows.length,
-      paidCount: paid.length,
+      paidCount: rows.filter((row) => row.isPaid).length,
     };
   }
 }

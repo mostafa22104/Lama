@@ -20,4 +20,10 @@ export class UpdateChargeDto implements ChargeUpdate {
   @IsOptionalNotNull()
   @IsBoolean()
   active?: boolean;
+
+  @IsOptionalNotNull()
+  @IsInt()
+  @Min(1)
+  @Max(31)
+  dayOfMonth?: number;
 }

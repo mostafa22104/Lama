@@ -25,7 +25,7 @@ export function MonthComparisonCard({ currentCollected, previousCollected }: Mon
       <View style={styles.header}>
         <Text variant="body" weight={700}>{t('reports:vsLastMonth')}</Text>
         <View style={[styles.diffBadge, isPositive ? styles.diffPositive : styles.diffNegative]}>
-          <Icon name="trendingUp" size={14} color={isPositive ? 'primaryDark' : 'danger'} />
+          <Icon name="trendingUp" size={14} color={isPositive ? 'primaryInk' : 'danger'} />
           <Text variant="caption" weight={700} style={isPositive ? styles.diffTextPositive : styles.diffTextNegative}>
             {isPositive ? t('reports:diffPositive', { amount: formatAmount(diff) }) : t('reports:diffNegative', { amount: formatAmount(Math.abs(diff)) })}
           </Text>
@@ -59,13 +59,13 @@ const useStyles = makeStyles((t) => ({
   card: { gap: 14 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   diffBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999 },
-  diffPositive: { backgroundColor: '#E2F1E8' },
+  diffPositive: { backgroundColor: t.status.paid.bg },
   diffNegative: { backgroundColor: t.colors.dangerSoft },
-  diffTextPositive: { color: '#1B6B43' },
+  diffTextPositive: { color: t.status.paid.fg },
   diffTextNegative: { color: t.colors.danger },
   barGroup: { gap: 4 },
   barLabelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  track: { height: 12, borderRadius: 6, backgroundColor: '#EFEBE3', overflow: 'hidden' },
-  prevFill: { height: '100%', borderRadius: 6, backgroundColor: '#9DB8B3' },
+  track: { height: 12, borderRadius: 6, backgroundColor: t.colors.line, overflow: 'hidden' },
+  prevFill: { height: '100%', borderRadius: 6, backgroundColor: t.colors.muted },
   currFill: { height: '100%', borderRadius: 6, backgroundColor: t.colors.primary },
 }));

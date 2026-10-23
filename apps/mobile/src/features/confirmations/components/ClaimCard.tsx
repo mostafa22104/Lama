@@ -36,7 +36,7 @@ export function ClaimCard({
     <Card testID={`claim-card-${claim.id}`} style={styles.card}>
       <View style={styles.header}>
         <View style={styles.avatar}>
-          <Text variant="body" weight={700} color="primary">{initial}</Text>
+          <Text variant="body" weight={700} color="primaryInk">{initial}</Text>
         </View>
         <View style={styles.headerText}>
           <Text variant="body" weight={700}>{claim.customerName}</Text>

@@ -8,6 +8,7 @@ import Calendar from 'lucide-react-native/icons/calendar';
 import ChartNoAxesColumn from 'lucide-react-native/icons/chart-no-axes-column';
 import Check from 'lucide-react-native/icons/check';
 import ChevronLeft from 'lucide-react-native/icons/chevron-left';
+import ChevronRight from 'lucide-react-native/icons/chevron-right';
 import CircleAlert from 'lucide-react-native/icons/circle-alert';
 import CircleCheck from 'lucide-react-native/icons/circle-check';
 import House from 'lucide-react-native/icons/house';
@@ -33,7 +34,7 @@ import X from 'lucide-react-native/icons/x';
 import { useTheme } from '../../theme';
 
 const ICONS = {
-  arrowBack: ArrowLeft, chevronForward: ChevronLeft, home: House, users: Users,
+  arrowBack: ArrowLeft, chevronForward: ChevronLeft, chevronBack: ChevronRight, home: House, users: Users,
   confirmations: CircleCheck, reports: ChartNoAxesColumn, check: Check, close: X, plus: Plus,
   search: Search, bell: Bell, whatsapp: MessageCircle, calendar: Calendar, sun: Sun, moon: Moon,
   language: Languages, logout: LogOut, mail: Mail, phone: Smartphone, cash: Banknote, alert: CircleAlert,

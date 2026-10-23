@@ -60,4 +60,36 @@ describe('cash payments (e2e)', () => {
     await api.post(`/invoices/${invoice.id}/cash-payment`).expect(404);
     expect(await t.prisma.payment.count({ where: { invoiceId: invoice.id } })).toBe(0);
   });
+
+  it('records partial cash payment and keeps remaining balance due', async () => {
+    const { business, api } = await createOwner(t);
+    const invoice = await invoiceFor(business.id);
+
+    // Pay 200 out of 450
+    const res = await api.post(`/invoices/${invoice.id}/cash-payment`).send({ amount: 200 }).expect(201);
+    expect(res.body).toMatchObject({ id: invoice.id, amount: 250 });
+    expect(res.body.status).not.toBe('paid');
+
+    const payments = await t.prisma.payment.findMany({ where: { invoiceId: invoice.id } });
+    expect(payments).toHaveLength(1);
+    expect(payments[0]).toMatchObject({ method: 'cash', amount: 200 });
+
+    const customerMid = await api.get(`/customers/${invoice.customerId}`).expect(200);
+    expect(customerMid.body.balance).toBe(250);
+
+    // Pay remaining 250
+    const res2 = await api.post(`/invoices/${invoice.id}/cash-payment`).send({ amount: 250 }).expect(201);
+    expect(res2.body).toMatchObject({ id: invoice.id, status: 'paid' });
+
+    const customerFinal = await api.get(`/customers/${invoice.customerId}`).expect(200);
+    expect(customerFinal.body.balance).toBe(0);
+    expect(customerFinal.body.status).toBe('paid');
+  });
+
+  it('rejects invalid payment amounts', async () => {
+    const { business, api } = await createOwner(t);
+    const invoice = await invoiceFor(business.id);
+    await api.post(`/invoices/${invoice.id}/cash-payment`).send({ amount: 0 }).expect(400);
+    await api.post(`/invoices/${invoice.id}/cash-payment`).send({ amount: -50 }).expect(400);
+  });
 });

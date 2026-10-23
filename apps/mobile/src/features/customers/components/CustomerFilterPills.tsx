@@ -55,8 +55,8 @@ const useStyles = makeStyles((t) => ({
   wrap: { marginHorizontal: -t.spacing.screenPaddingX },
   row: { flexDirection: 'row', gap: 8, paddingHorizontal: t.spacing.screenPaddingX },
   pill: { height: 38, paddingHorizontal: 14, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
-  pillActive: { backgroundColor: t.colors.ink, borderWidth: 1.5, borderColor: t.colors.ink },
+  pillActive: { backgroundColor: t.colors.primary, borderWidth: 1.5, borderColor: t.colors.primary },
   pillInactive: { backgroundColor: t.colors.surface, borderWidth: 1.5, borderColor: t.colors.inputBorder },
-  textActive: { color: '#FFFFFF' },
+  textActive: { color: t.colors.onPrimary },
   textInactive: { color: t.colors.ink },
 }));

@@ -27,7 +27,9 @@ export function UndoSnackbar({ message, onUndo }: UndoSnackbarProps) {
 
 const useStyles = makeStyles((t) => ({
   container: {
-    backgroundColor: t.colors.ink,
+    backgroundColor: t.name === 'dark' ? '#1A2A27' : t.colors.ink,
+    borderWidth: 1,
+    borderColor: t.name === 'dark' ? t.colors.line : 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -36,6 +38,7 @@ const useStyles = makeStyles((t) => ({
     borderRadius: 14,
     marginHorizontal: 16,
     marginBottom: 8,
+    elevation: 4,
   },
   text: {
     color: t.colors.onPrimary,
@@ -46,6 +49,6 @@ const useStyles = makeStyles((t) => ({
     paddingVertical: 4,
   },
   btnText: {
-    color: t.colors.primarySoft,
+    color: t.name === 'dark' ? t.colors.primaryInk : t.colors.primarySoft,
   },
 }));

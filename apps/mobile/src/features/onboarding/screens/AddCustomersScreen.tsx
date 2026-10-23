@@ -40,6 +40,12 @@ export function AddCustomersScreen() {
       title: t('onboarding:excelTitle'),
       desc: t('onboarding:excelDesc'),
     },
+    {
+      key: 'manual',
+      icon: 'pencil',
+      title: t('customers:manualMethodTitle'),
+      desc: t('customers:manualMethodDesc'),
+    },
   ];
 
   return (
@@ -69,7 +75,7 @@ export function AddCustomersScreen() {
           <Pressable
             key={m.key}
             accessibilityRole="button"
-            onPress={() => navigation.navigate('NotebookReview')}
+            onPress={() => m.key === 'manual' ? navigation.navigate('AddManualCustomer' as never) : navigation.navigate('NotebookReview')}
             style={[styles.card, m.badge ? styles.primaryCard : undefined]}
           >
             {m.badge ? (
@@ -97,49 +103,30 @@ export function AddCustomersScreen() {
 
 const useStyles = makeStyles((t) => ({
   subtitle: { marginBottom: 12 },
-  list: { gap: 14 },
+  list: { gap: 12 },
   card: {
     backgroundColor: t.colors.surface,
     borderColor: t.colors.line,
     borderWidth: 1.5,
     borderRadius: 20,
-    padding: 18,
+    padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
-    minHeight: 104,
+    gap: 14,
+    minHeight: 96,
     position: 'relative',
   },
-  primaryCard: {
-    borderColor: t.colors.primary,
-    borderWidth: 2,
-  },
+  primaryCard: { borderColor: t.colors.primary, borderWidth: 2 },
   badge: {
-    position: 'absolute',
-    top: 12,
-    left: 14,
-    backgroundColor: t.colors.gold,
-    paddingVertical: 3,
-    paddingHorizontal: 10,
-    borderRadius: 999,
+    position: 'absolute', top: 12, left: 14,
+    backgroundColor: t.colors.gold, paddingVertical: 2, paddingHorizontal: 10, borderRadius: 999,
   },
-  badgeText: {
-    color: t.colors.onPrimary,
-    fontSize: 11,
-  },
+  badgeText: { color: t.colors.onPrimary, fontSize: 11 },
   iconCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 16,
-    backgroundColor: t.colors.primarySoft,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 52, height: 52, borderRadius: 16,
+    backgroundColor: t.colors.primarySoft, alignItems: 'center', justifyContent: 'center',
   },
-  cardText: {
-    flex: 1,
-    gap: 4,
-  },
-  desc: {
-    lineHeight: 18,
-  },
+  cardText: { flex: 1, gap: 4 },
+  desc: { lineHeight: 18 },
 }));
+

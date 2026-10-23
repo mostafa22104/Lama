@@ -79,29 +79,57 @@ export class InvoiceRepository {
     return this.prisma.invoice.findFirst({ where: { id, businessId, customer: { archivedAt: null } }, select: INVOICE_SELECT });
   }
 
-  /** Pays the invoice in one transaction; only the first caller wins. */
-  markPaidInCash(businessId: string, id: string, now: Date): Promise<InvoiceRecord | 'not_found' | 'already_paid'> {
+  /** Pays the invoice or records partial payment; only the first caller wins if full. */
+  markPaidInCash(
+    businessId: string,
+    id: string,
+    now: Date,
+    amount?: number,
+  ): Promise<InvoiceRecord | 'not_found' | 'already_paid'> {
     return this.prisma.$transaction(async (tx) => {
       const invoice = await tx.invoice.findFirst({
         where: { id, businessId, customer: { archivedAt: null } },
-        select: { amount: true } });
+        select: { amount: true, paidAt: true },
+      });
       if (!invoice) return 'not_found';
-      const { count } = await tx.invoice.updateMany({ where: { id, paidAt: null }, data: { paidAt: now } });
-      if (count === 0) return 'already_paid';
-      await tx.payment.create({ data: { invoiceId: id, amount: invoice.amount, method: 'cash', recordedAt: now } });
+      if (invoice.paidAt !== null) return 'already_paid';
+
+      const payAmount = amount !== undefined && amount > 0 ? Math.min(amount, invoice.amount) : invoice.amount;
+      const isFull = payAmount >= invoice.amount;
+
+      if (isFull) {
+        const { count } = await tx.invoice.updateMany({ where: { id, paidAt: null }, data: { paidAt: now } });
+        if (count === 0) return 'already_paid';
+        await tx.payment.create({ data: { invoiceId: id, amount: invoice.amount, method: 'cash', recordedAt: now } });
+      } else {
+        await tx.invoice.update({
+          where: { id },
+          data: { amount: invoice.amount - payAmount },
+        });
+        await tx.payment.create({ data: { invoiceId: id, amount: payAmount, method: 'cash', recordedAt: now } });
+      }
       return tx.invoice.findUniqueOrThrow({ where: { id }, select: INVOICE_SELECT });
     });
   }
 
-  findForPeriod(businessId: string, period: string): Promise<{ amount: number; paidAt: Date | null }[]> {
+  async findForPeriod(businessId: string, period: string): Promise<{ amount: number; paidAmount: number; isPaid: boolean }[]> {
     const { start, end } = periodRange(period);
-    return this.prisma.invoice.findMany({
+    const rows = await this.prisma.invoice.findMany({
       where: {
         businessId,
         customer: { archivedAt: null },
         OR: [{ period }, { period: null, dueDate: { gte: fromIsoDate(start), lte: fromIsoDate(end) } }],
       },
-      select: { amount: true, paidAt: true },
+      select: { amount: true, paidAt: true, payments: { select: { amount: true } } },
+    });
+    return rows.map((r) => {
+      const paidAmount = r.payments.reduce((sum, p) => sum + p.amount, 0);
+      const isPaid = r.paidAt !== null;
+      return {
+        amount: isPaid ? r.amount : r.amount + paidAmount,
+        paidAmount: isPaid ? r.amount : paidAmount,
+        isPaid,
+      };
     });
   }
 }

@@ -45,7 +45,7 @@ const useStyles = makeStyles((t) => ({
   grid: { flexDirection: 'row', gap: 10 },
   card: { flex: 1, borderRadius: 18, padding: 14, gap: 4, minHeight: 96, justifyContent: 'center' },
   overdueCard: { backgroundColor: t.colors.dangerSoft },
-  awaitingCard: { backgroundColor: '#E4ECF7' },
-  awaitingText: { color: '#2A578F' },
-  awaitingSub: { color: '#2A4A73' },
+  awaitingCard: { backgroundColor: t.status.awaiting.bg },
+  awaitingText: { color: t.status.awaiting.fg },
+  awaitingSub: { color: t.status.awaiting.fg, opacity: 0.8 },
 }));

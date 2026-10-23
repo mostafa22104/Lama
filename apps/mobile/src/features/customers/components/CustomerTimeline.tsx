@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import type { HistoryEventDto } from '@lamma/shared';
-import { AmountText, Card, Icon, StatusChip, Text } from '../../../shared/components';
-import { makeStyles } from '../../../theme';
+import type { HistoryEventDto, Theme, ThemeColors } from '@lamma/shared';
+import { AmountText, Card, Icon, type IconName, StatusChip, Text } from '../../../shared/components';
+import { makeStyles, useTheme } from '../../../theme';
 
 interface CustomerTimelineProps {
   events: HistoryEventDto[];
@@ -11,6 +11,7 @@ interface CustomerTimelineProps {
 
 export function CustomerTimeline({ events }: CustomerTimelineProps) {
   const styles = useStyles();
+  const { colors, status } = useTheme();
   const { t } = useTranslation();
 
   return (
@@ -19,18 +20,18 @@ export function CustomerTimeline({ events }: CustomerTimelineProps) {
       <Card style={styles.card}>
         {events.map((ev, index) => {
           const isLast = index === events.length - 1;
-          const { icon, color, title, subtitle, amount, status } = formatEvent(ev, t);
+          const { icon, bg, iconColor, title, subtitle, amount, status: chipStatus } = formatEvent(ev, t, colors, status);
 
           return (
             <View key={index} style={styles.eventRow}>
               {!isLast ? <View style={styles.verticalLine} /> : null}
-              <View style={[styles.iconCircle, { backgroundColor: color }]}>
-                <Icon name={icon} size={18} color="surface" />
+              <View style={[styles.iconCircle, { backgroundColor: bg }]}>
+                <Icon name={icon} size={18} color={iconColor} />
               </View>
               <View style={styles.eventBody}>
                 <View style={styles.titleRow}>
                   <Text variant="body" weight={600} numberOfLines={1}>{title}</Text>
-                  {status ? <StatusChip status={status} /> : null}
+                  {chipStatus ? <StatusChip status={chipStatus} /> : null}
                 </View>
                 <View style={styles.subRow}>
                   <Text variant="caption" color="muted">{subtitle}</Text>
@@ -45,24 +46,39 @@ export function CustomerTimeline({ events }: CustomerTimelineProps) {
   );
 }
 
-function formatEvent(ev: HistoryEventDto, t: (key: string, opts?: Record<string, unknown>) => string) {
+function formatEvent(
+  ev: HistoryEventDto,
+  t: (key: string, opts?: Record<string, unknown>) => string,
+  colors: ThemeColors,
+  statusPalette: Theme['status'],
+): { icon: IconName; bg: string; iconColor: keyof ThemeColors; title: string; subtitle: string; amount?: number; status?: 'paid' | 'overdue' | 'due_soon' } {
+  const atDate = ev.at ? ev.at.slice(0, 10) : '';
   if (ev.type === 'reminder') {
-    return { icon: 'bell' as const, color: '#5E6A67', title: t('customers:history.reminderSent'), subtitle: ev.at };
+    return { icon: 'bell', bg: colors.line, iconColor: 'muted', title: t('customers:history.reminderSent'), subtitle: atDate };
   }
   if (ev.type === 'payment') {
     return {
-      icon: 'check' as const,
-      color: '#1B6B43',
+      icon: 'check',
+      bg: statusPalette.paid.bg,
+      iconColor: 'whatsapp',
       title: ev.method === 'cash' ? t('customers:history.paidCash', { title: ev.title }) : t('customers:history.paidProof', { title: ev.title }),
-      subtitle: ev.at,
+      subtitle: atDate,
       amount: ev.amount,
-      status: 'paid' as const,
+      status: 'paid',
     };
   }
   if (ev.type === 'invoice') {
-    return { icon: 'calendar' as const, color: '#A8231B', title: ev.title, subtitle: ev.at, amount: ev.amount, status: ev.status };
+    return {
+      icon: 'calendar',
+      bg: statusPalette.overdue.bg,
+      iconColor: 'danger',
+      title: ev.title,
+      subtitle: atDate,
+      amount: ev.amount,
+      status: ev.status === 'due_soon' ? 'due_soon' : 'overdue',
+    };
   }
-  return { icon: 'plus' as const, color: '#0F5E56', title: t('customers:history.created'), subtitle: ev.at };
+  return { icon: 'plus', bg: colors.primarySoft, iconColor: 'primaryInk', title: t('customers:history.created'), subtitle: atDate };
 }
 
 const useStyles = makeStyles((t) => ({

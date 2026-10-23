@@ -66,8 +66,9 @@ const useStyles = makeStyles((t) => ({
   },
   successText: {
     fontSize: 9,
-    color: t.colors.muted,
+    color: t.colors.ink,
     textAlign: 'center',
+    fontWeight: '600',
   },
   amountText: {
     fontSize: 13,
@@ -93,7 +94,7 @@ const useStyles = makeStyles((t) => ({
     width: '75%',
     height: 4,
     borderRadius: 2,
-    backgroundColor: t.colors.line,
+    backgroundColor: t.colors.inputBorder,
     marginTop: 6,
     alignSelf: 'flex-start',
   },
@@ -101,7 +102,7 @@ const useStyles = makeStyles((t) => ({
     width: '50%',
     height: 4,
     borderRadius: 2,
-    backgroundColor: t.colors.line,
+    backgroundColor: t.colors.inputBorder,
     alignSelf: 'flex-start',
   },
 }));

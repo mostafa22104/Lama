@@ -24,6 +24,17 @@ export const enCustomers: TranslationShape<typeof arCustomers> = {
   edit: 'Edit',
   recordCash: 'Paid cash? Record here',
   cashRecordedSuccess: 'Cash payment recorded ✅',
+  addManualTitle: 'Add New Customer',
+  nameLabel: 'Customer Name',
+  namePlaceholder: 'e.g. Mahmoud Hassan',
+  phoneLabel: 'Mobile Number',
+  phonePlaceholder: '01012345678',
+  noteLabel: 'Note (optional)',
+  notePlaceholder: 'e.g. Adam\'s parent',
+  saveCustomer: 'Save Customer',
+  manualMethodTitle: 'Add Manually',
+  manualMethodDesc: 'Enter name and mobile directly',
+  customerAddedSuccess: 'Customer added successfully ✅',
   historyTitle: 'History',
   history: {
     created: 'Added to Lamma',
@@ -33,3 +44,4 @@ export const enCustomers: TranslationShape<typeof arCustomers> = {
     confirmedProof: 'Confirmed via transfer receipt',
   },
 };
+

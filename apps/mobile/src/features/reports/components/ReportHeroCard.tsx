@@ -18,7 +18,7 @@ export function ReportHeroCard({ collected, expected }: ReportHeroCardProps) {
   return (
     <View style={styles.card}>
       <Text variant="body" style={styles.subtext}>{t('reports:heroWeCollected')}</Text>
-      <AmountText amount={collected} size="large" color="surface" />
+      <AmountText amount={collected} size="large" color="onPrimary" />
       <Text variant="section" weight={600} style={styles.whiteText}>{t('reports:thisMonth')}</Text>
 
       <View style={styles.track}>
@@ -35,15 +35,15 @@ export function ReportHeroCard({ collected, expected }: ReportHeroCardProps) {
   );
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((t) => ({
   card: {
-    backgroundColor: '#0F5E56',
+    backgroundColor: t.colors.primaryDark,
     borderRadius: 22,
     padding: 20,
     gap: 8,
   },
-  whiteText: { color: '#FFFFFF' },
+  whiteText: { color: t.colors.onPrimary },
   subtext: { color: '#CFE5E0' },
   track: { height: 10, borderRadius: 5, backgroundColor: 'rgba(255,255,255,0.2)', overflow: 'hidden', marginVertical: 4 },
-  fill: { height: '100%', borderRadius: 5, backgroundColor: '#F3D9A4' },
+  fill: { height: '100%', borderRadius: 5, backgroundColor: t.colors.gold },
 }));

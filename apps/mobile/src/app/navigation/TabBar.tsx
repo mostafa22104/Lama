@@ -11,10 +11,12 @@ import type { MainTabParamList } from './types';
 
 const TABS: Record<keyof MainTabParamList, { icon: IconName; label: string }> = {
   Home: { icon: 'home', label: 'common:tabs.home' },
+  Subscriptions: { icon: 'calendar', label: 'common:tabs.subscriptions' },
   Customers: { icon: 'users', label: 'common:tabs.customers' },
   Confirmations: { icon: 'confirmations', label: 'common:tabs.confirmations' },
   Reports: { icon: 'reports', label: 'common:tabs.reports' },
 };
+
 
 export function TabBar({ state, navigation }: BottomTabBarProps) {
   const styles = useStyles();

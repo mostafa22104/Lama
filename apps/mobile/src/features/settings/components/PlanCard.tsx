@@ -66,5 +66,5 @@ const useStyles = makeStyles((t) => ({
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   priceRow: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
   upgradeBox: { backgroundColor: t.colors.goldSoft, borderRadius: 14, padding: 14, gap: 10, marginTop: 4 },
-  upgradeDesc: { color: '#6B4A10', lineHeight: 20 },
+  upgradeDesc: { color: t.name === 'dark' ? t.colors.gold : '#6B4A10', lineHeight: 20 },
 }));

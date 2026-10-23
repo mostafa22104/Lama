@@ -27,7 +27,13 @@ export const arSettings = {
   weeklyBackupTitle: 'نسخة Excel كل أسبوع',
   weeklyBackupSubtitle: 'بتوصلك على الإيميل كل جمعة',
   themeSection: 'المظهر',
+  themeSystem: 'تلقائي',
+  themeLight: 'فاتح',
+  themeDark: 'داكن',
   languageSection: 'اللغة',
+  subscriptionsTitle: 'الاشتراكات والرسوم',
+  subscriptionsSubtitle: 'إدارة الاشتراكات والعملاء المشتركين',
   logout: 'خروج',
   logoutConfirm: 'متأكد إنك عاوز تخرج؟',
 } as const;
+

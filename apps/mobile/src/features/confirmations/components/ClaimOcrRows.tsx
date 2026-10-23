@@ -17,7 +17,7 @@ export function ClaimOcrRows({ claim }: ClaimOcrRowsProps) {
 
   return (
     <View testID="claim-ocr-rows" style={styles.container}>
-      <Text variant="caption" weight={700} color="primary" style={styles.header}>
+      <Text variant="caption" weight={700} color="primaryInk" style={styles.header}>
         {t('confirmations:ocrHeader')}
       </Text>
 

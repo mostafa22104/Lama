@@ -6,7 +6,14 @@ export type AuthStackParamList = {
   OtpVerify: { channel: ContactChannel; contact: string; signup?: SignupDetails };
 };
 
-export type MainTabParamList = { Home: undefined; Customers: undefined; Confirmations: undefined; Reports: undefined };
+export type MainTabParamList = {
+  Home: undefined;
+  Subscriptions: undefined;
+  Customers: undefined;
+  Confirmations: undefined;
+  Reports: undefined;
+};
+
 
 export type MainStackParamList = {
   Tabs: undefined;
@@ -14,9 +21,13 @@ export type MainStackParamList = {
   Reminders: undefined;
   Settings: undefined;
   AddCustomers: undefined;
+  AddManualCustomer: undefined;
   NotebookReview: undefined;
-  AddCharge: undefined;
+  AddCharge: { returnTo?: 'Subscriptions' | 'ReminderSettings' } | undefined;
   ReminderSettings: undefined;
+  Subscriptions: undefined;
+  SubscriptionDetail: { chargeId: string };
   ComponentGallery: undefined;
 };
+
 

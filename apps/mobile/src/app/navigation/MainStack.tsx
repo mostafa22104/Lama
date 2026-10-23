@@ -1,6 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { CustomerProfileScreen } from '../../features/customers';
+import { AddManualCustomerScreen, CustomerProfileScreen } from '../../features/customers';
+import { SubscriptionsScreen, SubscriptionDetailScreen } from '../../features/charges';
 import { ComponentGalleryScreen } from '../../features/dev';
 import { AddChargeScreen, AddCustomersScreen, NotebookReviewScreen, ReminderSettingsScreen } from '../../features/onboarding';
 import { RemindersScreen } from '../../features/reminders';
@@ -18,10 +19,14 @@ export function MainStack() {
       <Stack.Screen name="Reminders" component={RemindersScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="AddCustomers" component={AddCustomersScreen} />
+      <Stack.Screen name="AddManualCustomer" component={AddManualCustomerScreen} />
       <Stack.Screen name="NotebookReview" component={NotebookReviewScreen} />
       <Stack.Screen name="AddCharge" component={AddChargeScreen} />
       <Stack.Screen name="ReminderSettings" component={ReminderSettingsScreen} />
+      <Stack.Screen name="Subscriptions" component={SubscriptionsScreen} />
+      <Stack.Screen name="SubscriptionDetail" component={SubscriptionDetailScreen} />
       {__DEV__ ? <Stack.Screen name="ComponentGallery" component={ComponentGalleryScreen} /> : null}
     </Stack.Navigator>
   );
 }
+

@@ -57,29 +57,20 @@ export function ReminderSettingsScreen() {
       </Text>
 
       <Card style={styles.rulesCard}>
-        <View style={styles.ruleRow}>
-          <View style={styles.ruleText}>
-            <Text variant="body" weight={700}>{t('onboarding:before3Days')}</Text>
-            <Text variant="caption" color="muted">{t('onboarding:before3DaysDesc')}</Text>
+        {[
+          { key: 'b3', val: before3Days, set: setBefore3Days, title: 'onboarding:before3Days', desc: 'onboarding:before3DaysDesc' },
+          { key: 'due', val: onDueDate, set: setOnDueDate, title: 'onboarding:onDueDate', desc: 'onboarding:onDueDateDesc' },
+          { key: 'a3', val: after3Days, set: setAfter3Days, title: 'onboarding:after3Days', desc: 'onboarding:after3DaysDesc' },
+        ].map((rule, idx) => (
+          <View key={rule.key} style={[styles.ruleRow, idx === 2 ? styles.noBorder : null]}>
+            <View style={styles.iconCircle}><Icon name="bell" size={20} color="primary" /></View>
+            <View style={styles.ruleText}>
+              <Text variant="body" weight={700}>{t(rule.title)}</Text>
+              <Text variant="caption" color="muted">{t(rule.desc)}</Text>
+            </View>
+            <Toggle value={rule.val} onChange={rule.set} label={t(rule.title)} />
           </View>
-          <Toggle value={before3Days} onChange={setBefore3Days} label={t('onboarding:before3Days')} />
-        </View>
-
-        <View style={styles.ruleRow}>
-          <View style={styles.ruleText}>
-            <Text variant="body" weight={700}>{t('onboarding:onDueDate')}</Text>
-            <Text variant="caption" color="muted">{t('onboarding:onDueDateDesc')}</Text>
-          </View>
-          <Toggle value={onDueDate} onChange={setOnDueDate} label={t('onboarding:onDueDate')} />
-        </View>
-
-        <View style={styles.lastRow}>
-          <View style={styles.ruleText}>
-            <Text variant="body" weight={700}>{t('onboarding:after3Days')}</Text>
-            <Text variant="caption" color="muted">{t('onboarding:after3DaysDesc')}</Text>
-          </View>
-          <Toggle value={after3Days} onChange={setAfter3Days} label={t('onboarding:after3Days')} />
-        </View>
+        ))}
       </Card>
 
       <View style={styles.previewSection}>
@@ -90,9 +81,7 @@ export function ReminderSettingsScreen() {
 
         <View style={styles.chatBox}>
           <View style={styles.chatBubble}>
-            <Text variant="body" style={styles.bubbleText}>
-              {t('onboarding:previewSampleMessage')}
-            </Text>
+            <Text variant="body" style={styles.bubbleText}>{t('onboarding:previewSampleMessage')}</Text>
             <View style={styles.bubbleFooter}>
               <Icon name="whatsapp" size={14} color="whatsapp" />
               <Text variant="caption" color="muted">10:00 ص</Text>
@@ -108,39 +97,25 @@ export function ReminderSettingsScreen() {
 const useStyles = makeStyles((t) => ({
   subtitle: { marginBottom: 12 },
   rulesCard: { padding: 0, overflow: 'hidden' },
+  iconCircle: {
+    width: 40, height: 40, borderRadius: 12, backgroundColor: t.colors.primarySoft,
+    alignItems: 'center', justifyContent: 'center', marginEnd: 12,
+  },
   ruleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: t.colors.line,
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingVertical: 14, paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: t.colors.line,
   },
-  lastRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-  },
+  noBorder: { borderBottomWidth: 0 },
   ruleText: { flex: 1, gap: 2 },
   previewSection: { marginTop: 16, gap: 8 },
   previewHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   chatBox: {
-    backgroundColor: t.colors.chatBg,
-    borderRadius: 18,
-    padding: 14,
-    minHeight: 140,
-    alignItems: 'flex-start',
+    backgroundColor: t.colors.chatBg, borderWidth: 1, borderColor: t.colors.line,
+    borderRadius: 18, padding: 14, minHeight: 140, alignItems: 'flex-start',
   },
   chatBubble: {
-    backgroundColor: t.colors.surface,
-    borderRadius: 12,
-    padding: 10,
-    maxWidth: '90%',
-    gap: 6,
-    elevation: 1,
+    backgroundColor: t.name === 'dark' ? '#22322F' : t.colors.surface,
+    borderWidth: 1, borderColor: t.colors.line, borderRadius: 12, padding: 10, maxWidth: '90%', gap: 6, elevation: 1,
   },
   bubbleText: { fontSize: 14, lineHeight: 22 },
   bubbleFooter: { flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: 'flex-end' },

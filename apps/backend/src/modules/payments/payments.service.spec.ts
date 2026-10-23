@@ -38,7 +38,7 @@ describe('PaymentsService', () => {
           customer: { id: 'c-1', name: 'أحمد', phone: '+201012345678' },
           charge: { title: 'اشتراك أكتوبر' },
         },
-      } as any,
+      } as never,
     ]);
 
     const result = await service.listClaims('b-1');

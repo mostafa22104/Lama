@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { MainStackParamList } from '../../../app/navigation/types';
 import { api } from '../../../core/api/instances';
@@ -27,7 +26,6 @@ const DEFAULT_EXTRACTED: ExtractedCustomer[] = [
 export function NotebookReviewScreen() {
   const styles = useStyles();
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
-  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [items, setItems] = useState<ExtractedCustomer[]>(DEFAULT_EXTRACTED);
 

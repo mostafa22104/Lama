@@ -4,6 +4,7 @@ import { CurrentBusinessId } from '../../common/auth/current-business-id.decorat
 import { JwtAuthGuard } from '../../common/auth/jwt-auth.guard.js';
 import { toChargeDto } from './charge.mapper.js';
 import { ChargesService } from './charges.service.js';
+import { AssignCustomersDto } from './dto/assign-customers.dto.js';
 import { CreateChargeDto } from './dto/create-charge.dto.js';
 import { UpdateChargeDto } from './dto/update-charge.dto.js';
 
@@ -22,6 +23,24 @@ export class ChargesController {
     return (await this.charges.list(businessId)).map(toChargeDto);
   }
 
+  @Get(':id/customers')
+  async listAssignedCustomers(
+    @CurrentBusinessId() businessId: string,
+    @Param('id') id: string,
+  ): Promise<{ customerIds: string[] }> {
+    const customerIds = await this.charges.getAssignedCustomerIds(businessId, id);
+    return { customerIds };
+  }
+
+  @Post(':id/customers')
+  async assignCustomers(
+    @CurrentBusinessId() businessId: string,
+    @Param('id') id: string,
+    @Body() dto: AssignCustomersDto,
+  ): Promise<ChargeDto> {
+    return toChargeDto(await this.charges.assignCustomers(businessId, id, dto.customerIds));
+  }
+
   @Patch(':id')
   async update(
     @CurrentBusinessId() businessId: string,
@@ -31,3 +50,4 @@ export class ChargesController {
     return toChargeDto(await this.charges.update(businessId, id, dto));
   }
 }
+

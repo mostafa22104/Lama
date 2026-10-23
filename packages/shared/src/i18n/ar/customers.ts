@@ -21,6 +21,17 @@ export const arCustomers = {
   edit: 'تعديل',
   recordCash: 'دفع كاش؟ سجّله هنا',
   cashRecordedSuccess: 'تم تسجيل الدفع كاش بنجاح ✅',
+  addManualTitle: 'إضافة عميل جديد',
+  nameLabel: 'اسم العميل',
+  namePlaceholder: 'مثلاً: محمود حسن',
+  phoneLabel: 'رقم الموبايل',
+  phonePlaceholder: '01012345678',
+  noteLabel: 'ملاحظة (اختياري)',
+  notePlaceholder: 'مثلاً: ولي أمر آدم',
+  saveCustomer: 'حفظ العميل',
+  manualMethodTitle: 'إضافة يدوياً',
+  manualMethodDesc: 'اكتب الاسم ورقم الموبايل مباشرة',
+  customerAddedSuccess: 'تمت إضافة العميل بنجاح ✅',
   historyTitle: 'اللي حصل',
   history: {
     created: 'اتضاف في لمّة',
@@ -30,3 +41,4 @@ export const arCustomers = {
     confirmedProof: 'اتأكد بصورة التحويل',
   },
 } as const;
+

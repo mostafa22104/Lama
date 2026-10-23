@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import type { ChargeUpdate } from '@lamma/shared';
-import { fromIsoDate } from '../../common/dates/date-codec.js';
+import { type ChargeUpdate, periodOf } from '@lamma/shared';
+import { businessToday, fromIsoDate } from '../../common/dates/date-codec.js';
 import type { Prisma } from '../../generated/prisma/client.js';
 import { PrismaService } from '../../infra/prisma/prisma.service.js';
-import type { ChargeTerms, InvoiceRow } from '../invoices/index.js';
+import { type ChargeTerms, type InvoiceRow, buildInvoiceRows } from '../invoices/index.js';
+
 
 const WITH_COUNT = {
   _count: { select: { assignments: { where: { customer: { archivedAt: null } } } } },
@@ -39,7 +40,7 @@ export class ChargesRepository {
         dayOfMonth: terms.dayOfMonth,
         dueDate: terms.dueDate ? fromIsoDate(terms.dueDate) : null,
         createdAt,
-        billingFrom: createdAt,
+        billingFrom: terms.startDate ? fromIsoDate(terms.startDate) : createdAt,
         assignments: { createMany: { data: customerIds.map((customerId) => ({ customerId })) } },
         invoices: { createMany: { data: invoices.map((row) => ({ ...row, businessId })) } },
       },
@@ -62,4 +63,43 @@ export class ChargesRepository {
   update(id: string, data: ChargeUpdate & { billingFrom?: Date }): Promise<ChargeWithCount> {
     return this.prisma.charge.update({ where: { id }, data, include: WITH_COUNT });
   }
+
+  async assignedCustomerIds(chargeId: string): Promise<string[]> {
+    const rows = await this.prisma.chargeAssignment.findMany({
+      where: { chargeId, customer: { archivedAt: null } },
+      select: { customerId: true },
+    });
+    return rows.map((r) => r.customerId);
+  }
+
+  async assignCustomers(
+    chargeId: string,
+    businessId: string,
+    customerIds: string[],
+    terms: ChargeTerms,
+    now: Date,
+  ): Promise<ChargeWithCount> {
+    const existing = await this.prisma.chargeAssignment.findMany({
+      where: { chargeId, customerId: { in: customerIds } },
+      select: { customerId: true },
+    });
+    const existingSet = new Set(existing.map((e) => e.customerId));
+    const newIds = customerIds.filter((id) => !existingSet.has(id));
+    if (newIds.length > 0) {
+      const invoices = buildInvoiceRows(terms, newIds, [periodOf(businessToday(now))]);
+      await this.prisma.$transaction([
+        this.prisma.chargeAssignment.createMany({
+          data: newIds.map((customerId) => ({ chargeId, customerId })),
+          skipDuplicates: true,
+        }),
+        this.prisma.invoice.createMany({
+          data: invoices.map((row: InvoiceRow) => ({ ...row, businessId, chargeId })),
+        }),
+
+
+      ]);
+    }
+    return (await this.findOwned(businessId, chargeId))!;
+  }
 }
+

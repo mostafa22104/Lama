@@ -8,6 +8,7 @@ export interface ChargeTerms {
   amount: number;
   dayOfMonth: number | null;
   dueDate: IsoDate | null;
+  startDate?: IsoDate | null;
 }
 
 export interface InvoiceRow {

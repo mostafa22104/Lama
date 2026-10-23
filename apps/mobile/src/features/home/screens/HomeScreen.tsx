@@ -2,8 +2,9 @@ import React from 'react';
 import { RefreshControl, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import type { MainStackParamList } from '../../../app/navigation/types';
-import { Screen, Skeleton } from '../../../shared/components';
+import { Button, Screen, Skeleton } from '../../../shared/components';
 import { useHomeDashboard } from '../api/use-home-dashboard';
 import { CollectionProgressCard } from '../components/CollectionProgressCard';
 import { HomeGreeting } from '../components/HomeGreeting';
@@ -13,6 +14,7 @@ import { TodayRemindersCard } from '../components/TodayRemindersCard';
 
 export function HomeScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const { t } = useTranslation();
   const { data, isLoading, refetch, isRefetching } = useHomeDashboard();
 
   if (isLoading || !data) {
@@ -75,6 +77,26 @@ export function HomeScreen() {
         onSeeAllCustomers={() => navigation.navigate('Tabs', { screen: 'Customers' } as never)}
         onSelectCustomer={(customerId) => navigation.navigate('CustomerProfile', { customerId })}
       />
+
+      <View style={{ flexDirection: 'row', gap: 10, marginVertical: 4 }}>
+        <View style={{ flex: 1 }}>
+          <Button
+            variant="outline"
+            icon="calendar"
+            label="الاشتراكات"
+            onPress={() => navigation.navigate('Subscriptions')}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Button
+            variant="outline"
+            icon="plus"
+            label={t('home:newCharge')}
+            onPress={() => navigation.navigate('AddCharge', { returnTo: 'Subscriptions' })}
+          />
+        </View>
+      </View>
     </Screen>
+
   );
 }

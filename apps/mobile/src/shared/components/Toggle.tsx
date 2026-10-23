@@ -21,6 +21,6 @@ export function Toggle({ value, onChange, label }: { value: boolean; onChange: (
 const useStyles = makeStyles((t) => ({
   track: { width: 52, height: 30, borderRadius: 15, backgroundColor: t.colors.disabledBg, padding: 4, justifyContent: 'center' },
   on: { backgroundColor: t.colors.primary },
-  knob: { width: 22, height: 22, borderRadius: 11, backgroundColor: t.colors.surface },
+  knob: { width: 22, height: 22, borderRadius: 11, backgroundColor: t.colors.onPrimary },
   knobOn: { alignSelf: 'flex-end' },
 }));

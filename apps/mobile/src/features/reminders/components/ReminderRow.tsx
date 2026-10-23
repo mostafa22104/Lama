@@ -31,7 +31,7 @@ export function ReminderRow({ item, onSend, isSending = false }: ReminderRowProp
         {item.sent ? (
           <View style={styles.sentBadge}>
             <View style={styles.checkCircle}>
-              <Icon name="check" size={16} color="surface" />
+              <Icon name="check" size={16} color="onPrimary" />
             </View>
             <Text variant="caption" weight={700} color="whatsapp">
               {t('reminders:sent')}
@@ -54,7 +54,7 @@ export function ReminderRow({ item, onSend, isSending = false }: ReminderRowProp
 
 const useStyles = makeStyles((t) => ({
   card: { padding: 12 },
-  sentCard: { backgroundColor: '#F2F8F4' },
+  sentCard: { backgroundColor: t.colors.whatsappSoft },
   content: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   textWrap: { flex: 1, gap: 2 },
   sendBtn: { height: 44, paddingHorizontal: 12 },

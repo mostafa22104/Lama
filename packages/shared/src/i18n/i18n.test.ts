@@ -36,6 +36,7 @@ describe('i18n resources', () => {
     expect(resources.ar.common.tabs).toEqual({
       home: 'الرئيسية',
       customers: 'العملاء',
+      subscriptions: 'الاشتراكات',
       confirmations: 'التأكيدات',
       reports: 'التقارير',
     });

@@ -6,7 +6,7 @@ export const arCommon = {
   back: 'رجوع',
   offlineTitle: 'مفيش إنترنت',
   comingSoon: 'الصفحة دي جاية قريب',
-  tabs: { home: 'الرئيسية', customers: 'العملاء', confirmations: 'التأكيدات', reports: 'التقارير' },
+  tabs: { home: 'الرئيسية', subscriptions: 'الاشتراكات', customers: 'العملاء', confirmations: 'التأكيدات', reports: 'التقارير' },
   status: {
     paid: 'مدفوع',
     due_soon: 'مستحق قريب',

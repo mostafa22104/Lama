@@ -6,6 +6,9 @@ export type ChargeKind = (typeof CHARGE_KINDS)[number];
 export const CHARGE_ASSIGNMENTS = ['all', 'selected'] as const;
 export type ChargeAssignment = (typeof CHARGE_ASSIGNMENTS)[number];
 
+export const CHARGE_COLLECTION_TIMINGS = ['beginning', 'end'] as const;
+export type ChargeCollectionTiming = (typeof CHARGE_COLLECTION_TIMINGS)[number];
+
 export interface ChargeInput {
   kind: ChargeKind;
   /** Required for one_time; monthly defaults to DEFAULT_MONTHLY_TITLE. */
@@ -15,6 +18,8 @@ export interface ChargeInput {
   dayOfMonth?: number;
   /** Required for one_time. */
   dueDate?: IsoDate;
+  startDate?: IsoDate;
+  collectionTiming?: ChargeCollectionTiming;
   assignTo: ChargeAssignment;
   /** Required when assignTo is 'selected'. */
   customerIds?: string[];
@@ -24,6 +29,7 @@ export interface ChargeUpdate {
   title?: string;
   amount?: number;
   active?: boolean;
+  dayOfMonth?: number;
 }
 
 export interface ChargeDto {

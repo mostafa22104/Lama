@@ -19,3 +19,5 @@ export { ProgressBar } from './ProgressBar';
 export { Skeleton } from './Skeleton';
 export { StatusChip } from './StatusChip';
 export { Toggle } from './Toggle';
+export { CalendarModal } from './CalendarModal';
+export { DatePickerField } from './DatePickerField';

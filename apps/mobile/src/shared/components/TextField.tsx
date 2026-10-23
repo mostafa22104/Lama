@@ -23,6 +23,8 @@ export function TextField({ label, hint, error, ltr, suffix, ...input }: TextFie
           {...input}
           accessibilityLabel={label}
           placeholderTextColor={colors.muted}
+          cursorColor={colors.primaryInk}
+          selectionColor={colors.primarySoft}
           style={[styles.input, ltr ? styles.ltr : null]}
         />
         {suffix ? (

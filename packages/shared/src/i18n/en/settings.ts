@@ -30,7 +30,13 @@ export const enSettings: TranslationShape<typeof arSettings> = {
   weeklyBackupTitle: 'Weekly Excel backup',
   weeklyBackupSubtitle: 'Sent to your email every Friday',
   themeSection: 'Theme',
+  themeSystem: 'System',
+  themeLight: 'Light',
+  themeDark: 'Dark',
   languageSection: 'Language',
+  subscriptionsTitle: 'Subscriptions & Charges',
+  subscriptionsSubtitle: 'Manage subscriptions and assigned customers',
   logout: 'Log out',
   logoutConfirm: 'Are you sure you want to log out?',
 };
+

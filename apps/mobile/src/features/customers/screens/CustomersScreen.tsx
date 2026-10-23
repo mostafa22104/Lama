@@ -4,13 +4,15 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import type { MainStackParamList } from '../../../app/navigation/types';
-import { CustomerRow, EmptyState, Icon, Screen, Skeleton, Text } from '../../../shared/components';
-import { makeStyles } from '../../../theme';
+import { Button, CustomerRow, EmptyState, Icon, Screen, Skeleton, Text } from '../../../shared/components';
+
+import { makeStyles, useTheme } from '../../../theme';
 import { useCustomers } from '../api/use-customers';
 import { CustomerFilterPills, type CustomerFilterKey } from '../components/CustomerFilterPills';
 
 export function CustomersScreen() {
   const styles = useStyles();
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const [search, setSearch] = useState('');
@@ -47,7 +49,7 @@ export function CustomersScreen() {
           onPress={() => navigation.navigate('AddCustomers' as never)}
           style={styles.addBtn}
         >
-          <Icon name="plus" color="surface" size={18} />
+          <Icon name="plus" color="onPrimary" size={18} />
           <Text variant="caption" weight={700} style={styles.addBtnText}>
             {t('customers:addCustomer')}
           </Text>
@@ -59,7 +61,7 @@ export function CustomersScreen() {
         <TextInput
           accessibilityLabel={t('customers:searchA11y')}
           placeholder={t('customers:searchPlaceholder')}
-          placeholderTextColor="#9E988D"
+          placeholderTextColor={colors.muted}
           value={search}
           onChangeText={setSearch}
           style={styles.searchInput}
@@ -83,8 +85,10 @@ export function CustomersScreen() {
         <EmptyState
           icon="users"
           title={search ? t('customers:emptySearch') : t('customers:emptyList')}
+          action={search ? undefined : <Button label={t('customers:addCustomer')} onPress={() => navigation.navigate('AddCustomers' as never)} />}
         />
       ) : (
+
         <View style={styles.list}>
           {customers.map((c) => (
             <CustomerRow
